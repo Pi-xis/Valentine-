@@ -4,14 +4,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine</title>
 <style>
-/* --- Reset & Base --- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #f7b2a6, #ffe5d9); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; flex-direction: column; perspective: 1000px; }
 
-/* --- Card Style --- */ .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 25px; text-align: center; width: 320px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 10; }
+.card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 25px; text-align: center; width: 320px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 10; }
 
 img { width: 100%; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
@@ -19,7 +18,7 @@ h2 { margin: 20px 0; font-family: 'Brush Script MT', cursive; font-size: 30px; c
 
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-/* --- Buttons --- */ .buttons { display: flex; justify-content: space-around; margin-top: 20px; }
+.buttons { display: flex; justify-content: space-around; margin-top: 20px; }
 
 button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
@@ -27,11 +26,11 @@ button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px;
 
 .no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; } .no:hover { transform: scale(1.1); }
 
-/* --- Roses as Emoji --- */ .rose { position: absolute; font-size: 30px; pointer-events: none; animation: fall 4s linear forwards; z-index: 5; transform-style: preserve-3d; }
+.rose { position: absolute; font-size: 30px; pointer-events: none; animation: fall linear forwards; z-index: 5; }
 
-@keyframes fall { 0% { transform: translateY(-50px) rotateX(0deg) rotateY(0deg); opacity: 1; } 100% { transform: translateY(80vh) rotateX(360deg) rotateY(360deg); opacity: 1; } }
+@keyframes fall { 0% { transform: translateY(-50px); opacity: 1; } 100% { transform: translateY(100vh); opacity: 1; } }
 
-/* --- Message Style --- */ #message { margin-top: 25px; font-size: 24px; color: #6a0dad; font-weight: bold; text-align: center; z-index: 15; font-family: 'Lucida Handwriting', cursive; letter-spacing: 2px; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); transform: rotate(-1deg); transition: color 0.3s ease, transform 0.3s ease; } #message.show { transform: rotate(0deg) scale(1.1); color: #8a2be2; } </style>
+#message { margin-top: 25px; font-size: 24px; color: #6a0dad; font-weight: bold; text-align: center; z-index: 15; font-family: 'Lucida Handwriting', cursive; letter-spacing: 2px; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); transform: rotate(-1deg); transition: color 0.3s ease, transform 0.3s ease; } #message.show { transform: rotate(0deg) scale(1.1); color: #8a2be2; } </style>
 
 </head>
 <body><div class="card">
@@ -44,7 +43,6 @@ button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px;
 </div><div id="message"></div><script>
 let rosesIntervalActive = false;
 let messageShown = false;
-
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const message = document.getElementById('message');
@@ -54,9 +52,10 @@ function createRose(x) {
   rose.classList.add('rose');
   rose.style.left = x + 'px';
   rose.innerText = '🌹';
+  rose.style.top = '-50px';
   rose.style.animationDuration = (3 + Math.random()*2) + 's';
   document.body.appendChild(rose);
-  setTimeout(() => { rose.remove(); }, 4000);
+  setTimeout(() => { rose.remove(); }, 5000);
 }
 
 yesBtn.addEventListener('click', () => {
@@ -76,7 +75,7 @@ yesBtn.addEventListener('click', () => {
   if (!rosesIntervalActive) {
     rosesIntervalActive = true;
     setInterval(() => {
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 5; i++) {
         createRose(Math.random() * window.innerWidth);
       }
     }, 150);
@@ -89,10 +88,8 @@ noBtn.addEventListener('click', (event) => {
   yesBtn.style.padding = "15px 30px";
 
   noBtn.style.position = "absolute";
-  let left = Math.random() * 80;
-  let top = Math.random() * 80;
-  noBtn.style.left = left + "%";
-  noBtn.style.top = top + "%";
+  noBtn.style.left = Math.random() * 80 + "%";
+  noBtn.style.top = Math.random() * 80 + "%";
 
   const rect = noBtn.getBoundingClientRect();
   createRose(rect.left + rect.width/2);
