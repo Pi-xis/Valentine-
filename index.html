@@ -65,6 +65,31 @@ button {
 @keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); } 100% { transform: translateY(100vh) rotate(360deg); } }
 #message { margin-top: 25px; font-size: 24px; color: #6a0dad; font-weight: bold; text-align: center; z-index: 15; font-family: 'Lucida Handwriting', cursive; letter-spacing: 2px; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); transform: rotate(-1deg); transition: color 0.3s ease, transform 0.3s ease; }
 #message.show { transform: rotate(0deg) scale(1.1); color: #8a2be2; }
+#thankyou {
+  position: fixed;
+  inset: 0;
+  background: rgba(247,178,166,0.97);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 20;
+  animation: fadeIn 0.8s ease forwards;
+}
+#thankyou h1 {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 52px;
+  color: #ff4d6d;
+  margin-bottom: 10px;
+}
+#thankyou p {
+  font-size: 20px;
+  color: #333;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
 </style>
 </head>
 <body>
@@ -75,11 +100,18 @@ button {
     <button class="yes" id="yesBtn">Yes</button>
     <button class="no" id="noBtn">No</button>
   </div>
+</div><div id="thankyou">
+  <h1>Thank youuu</h1>
+  <p>You just made this moment special.</p>
 </div>
 <script>
 let rosesIntervalActive = false;function createRose(x) { const rose = document.createElement('div'); rose.classList.add('rose'); rose.style.left = x + 'px'; rose.style.top = '-50px'; rose.innerText = '🌹'; rose.style.animationDuration = (3 + Math.random()*2) + 's'; document.body.appendChild(rose); setTimeout(() => { rose.remove(); }, 5000); }
 
-yesBtn.addEventListener('click', () => { let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize); yesBtn.style.fontSize = (currentSize + 6) + "px"; yesBtn.style.padding = "15px 30px";  yesBtn.disabled = true; noBtn.disabled = true; if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 5; i++) createRose(Math.random() * window.innerWidth); }, 150); } });
+yesBtn.addEventListener('click', () => { let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize); yesBtn.style.fontSize = (currentSize + 6) + "px"; yesBtn.style.padding = "15px 30px"; yesBtn.disabled = true; noBtn.disabled = true;
+
+document.getElementById('thankyou').style.display = 'flex';
+
+if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 6; i++) createRose(Math.random() * window.innerWidth); }, 120); } });
 
 noBtn.addEventListener('click', (event) => { let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize); yesBtn.style.fontSize = (currentSize + 6) + "px"; yesBtn.style.padding = "15px 30px"; noBtn.style.position = "absolute"; noBtn.style.left = Math.random() * 80 + "%"; noBtn.style.top = Math.random() * 80 + "%"; const rect = noBtn.getBoundingClientRect(); createRose(rect.left + rect.width/2); }); </script>
 
