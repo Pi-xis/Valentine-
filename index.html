@@ -27,11 +27,9 @@ button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px;
 
 .no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; } .no:hover { transform: scale(1.1); }
 
-/* --- Roses & Bouquet --- */ .rose { position: absolute; width: 35px; height: 35px; background: url('https://i.imgur.com/6bJmM6H.png') no-repeat center/contain; pointer-events: none; animation: fall 5s linear forwards, zoom 5s ease-in-out forwards; z-index: 5; }
+/* --- Roses as Emoji --- */ .rose { position: absolute; font-size: 30px; pointer-events: none; animation: fall 5s linear forwards; z-index: 5; }
 
-.bouquet { position: absolute; width: 140px; height: 140px; background: url('https://i.imgur.com/Zf6h4mv.png') no-repeat center/contain; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); z-index: 20; display: none; transition: transform 0.5s ease; } .bouquet.show { display: block; transform: translate(-50%, -50%) scale(1); }
-
-@keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } } @keyframes zoom { 0% { transform: scale(0.5); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+@keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
 
 /* --- Message Style --- */ #message { margin-top: 25px; font-size: 24px; color: #6a0dad; font-weight: bold; text-align: center; z-index: 15; font-family: 'Lucida Handwriting', cursive; letter-spacing: 2px; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); transform: rotate(-1deg); transition: color 0.3s ease, transform 0.3s ease; } #message.show { transform: rotate(0deg) scale(1.1); color: #8a2be2; } </style>
 
@@ -43,14 +41,12 @@ button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px;
     <button class="yes" id="yesBtn">Yes</button>
     <button class="no" id="noBtn">No</button>
   </div>
-</div><div id="message"></div>
-<div class="bouquet" id="bouquet"></div><audio id="roseSound" src="https://www.soundjay.com/nature/sounds/rain-01.mp3"></audio>
+</div><div id="message"></div><audio id="roseSound" src="https://www.soundjay.com/nature/sounds/rain-01.mp3"></audio>
 
 <script>
 let rosesIntervalActive = false;
 let messageShown = false;
 
-const bouquet = document.getElementById('bouquet');
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const roseSound = document.getElementById('roseSound');
@@ -60,6 +56,7 @@ function createRose(x) {
   const rose = document.createElement('div');
   rose.classList.add('rose');
   rose.style.left = x + 'px';
+  rose.innerText = '🌹';
   rose.style.animationDuration = (4 + Math.random()*2) + 's';
   document.body.appendChild(rose);
   setTimeout(() => { rose.remove(); }, 5000);
@@ -75,8 +72,6 @@ yesBtn.addEventListener('click', () => {
     message.classList.add('show');
     messageShown = true;
   }
-
-  bouquet.classList.add('show');
 
   // Désactiver les boutons
   yesBtn.disabled = true;
