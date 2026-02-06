@@ -1,170 +1,114 @@
 <!DOCTYPE html><html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentine</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7b2a6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      overflow: hidden;
-      position: relative;
-      flex-direction: column;
-    }.card {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-  width: 300px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  z-index: 10;
-}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine</title>
+<style>
+/* --- Reset & Base --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #f7b2a6, #ffe5d9); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; flex-direction: column; }
 
-img {
-  width: 100%;
-  border-radius: 10px;
-}
+/* --- Card Style --- */ .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 25px; text-align: center; width: 320px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 10; transition: transform 0.3s ease; } .card:hover { transform: scale(1.05); }
 
-h2 {
-  margin: 15px 0;
-}
+img { width: 100%; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
-.buttons {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 15px;
-}
+h2 { margin: 20px 0; font-family: 'Brush Script MT', cursive; font-size: 30px; color: #ff4d6d; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); transition: color 0.3s ease; }
 
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
+h2:hover { color: #ff7090; }
 
-.yes {
-  background: #ff4d6d;
-  color: white;
-}
+/* --- Buttons --- */ .buttons { display: flex; justify-content: space-around; margin-top: 20px; }
 
-.no {
-  background: #ccc;
-}
+button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-.rose {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  background: url('https://i.imgur.com/6bJmM6H.png') no-repeat center/contain;
-  pointer-events: none;
-  animation: fall 5s linear forwards, zoom 5s ease-in-out forwards;
-  z-index: 5;
-}
+.yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; } .yes:hover { transform: scale(1.1); }
 
-.bouquet {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  background: url('https://i.imgur.com/Zf6h4mv.png') no-repeat center/contain;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 20;
-  display: none;
-}
+.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; } .no:hover { transform: scale(1.1); }
 
-@keyframes fall {
-  0% { transform: translateY(-50px); opacity: 1; }
-  100% { transform: translateY(100vh); opacity: 0; }
-}
+/* --- Roses & Bouquet --- */ .rose { position: absolute; width: 35px; height: 35px; background: url('https://i.imgur.com/6bJmM6H.png') no-repeat center/contain; pointer-events: none; animation: fall 5s linear forwards, zoom 5s ease-in-out forwards; z-index: 5; }
 
-@keyframes zoom {
-  0% { transform: scale(0.5); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
+.bouquet { position: absolute; width: 140px; height: 140px; background: url('https://i.imgur.com/Zf6h4mv.png') no-repeat center/contain; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); z-index: 20; display: none; transition: transform 0.5s ease; } .bouquet.show { display: block; transform: translate(-50%, -50%) scale(1); }
 
-#message {
-  margin-top: 20px;
-  font-size: 18px;
-  color: #ff4d6d;
-  font-weight: bold;
-  text-align: center;
-  z-index: 15;
-}
+@keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } } @keyframes zoom { 0% { transform: scale(0.5); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-  </style>
+/* --- Message Style --- */ #message { margin-top: 25px; font-size: 24px; color: #6a0dad; font-weight: bold; text-align: center; z-index: 15; font-family: 'Lucida Handwriting', cursive; letter-spacing: 2px; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); transform: rotate(-1deg); transition: color 0.3s ease, transform 0.3s ease; } #message.show { transform: rotate(0deg) scale(1.1); color: #8a2be2; } </style>
+
 </head>
-<body>  <div class="card">
-    <img src="https://wallpapercave.com/wp/wp8365768.png" alt="Minions Valentine">
-    <h2>Veux-tu être mon Valentine ?</h2>
-    <div class="buttons">
-      <button class="yes" id="yesBtn">Yes</button>
-      <button class="no" id="noBtn">No</button>
-    </div>
-  </div>  <div id="message"></div>
-  <div class="bouquet" id="bouquet"></div>  <script>
-    let rosesIntervalActive = false;
-    let messageShown = false;
+<body><div class="card">
+  <img src="https://wallpapercave.com/wp/wp8365768.png" alt="Minions Valentine">
+  <h2>You will be my Valentine</h2>
+  <div class="buttons">
+    <button class="yes" id="yesBtn">Yes</button>
+    <button class="no" id="noBtn">No</button>
+  </div>
+</div><div id="message"></div>
+<div class="bouquet" id="bouquet"></div><audio id="roseSound" src="https://www.soundjay.com/nature/sounds/rain-01.mp3"></audio>
 
-    const bouquet = document.getElementById('bouquet');
+<script>
+let rosesIntervalActive = false;
+let messageShown = false;
 
-    function createRose(x) {
-      const rose = document.createElement('div');
-      rose.classList.add('rose');
-      rose.style.left = x + 'vw';
-      document.body.appendChild(rose);
-      setTimeout(() => { rose.remove(); }, 5000);
-    }
+const bouquet = document.getElementById('bouquet');
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const roseSound = document.getElementById('roseSound');
+const message = document.getElementById('message');
 
-    document.getElementById('yesBtn').addEventListener('click', () => {
-      const yesBtn = document.getElementById("yesBtn");
+function createRose(x) {
+  const rose = document.createElement('div');
+  rose.classList.add('rose');
+  rose.style.left = x + 'px';
+  rose.style.animationDuration = (4 + Math.random()*2) + 's';
+  document.body.appendChild(rose);
+  setTimeout(() => { rose.remove(); }, 5000);
+}
 
-      // Agrandir le bouton Yes
-      let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-      yesBtn.style.fontSize = (currentSize + 6) + "px";
-      yesBtn.style.padding = "15px 30px";
+yesBtn.addEventListener('click', () => {
+  let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+  yesBtn.style.fontSize = (currentSize + 6) + "px";
+  yesBtn.style.padding = "15px 30px";
 
-      // Afficher le message narcissique
-      if (!messageShown) {
-        document.getElementById('message').innerText = "💖 Irrésistible comme toujours 💖";
-        messageShown = true;
-      }
+  if (!messageShown) {
+    message.innerText = "Irrésistible comme toujours";
+    message.classList.add('show');
+    messageShown = true;
+  }
 
-      // Afficher le bouquet
-      bouquet.style.display = 'block';
+  bouquet.classList.add('show');
 
-      // Faire pleuvoir des roses
-      if (!rosesIntervalActive) {
-        rosesIntervalActive = true;
-        setInterval(() => {
-          createRose(Math.random() * 90);
-        }, 300);
-      }
-    });
+  // Désactiver les boutons
+  yesBtn.disabled = true;
+  noBtn.disabled = true;
 
-    document.getElementById('noBtn').addEventListener('click', (event) => {
-      const yesBtn = document.getElementById("yesBtn");
-      const noBtn = event.target;
+  roseSound.currentTime = 0;
+  roseSound.play().catch(()=>{});
 
-      // Agrandir le bouton Yes
-      let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-      yesBtn.style.fontSize = (currentSize + 6) + "px";
-      yesBtn.style.padding = "15px 30px";
+  if (!rosesIntervalActive) {
+    rosesIntervalActive = true;
+    setInterval(() => {
+      createRose(Math.random() * window.innerWidth);
+    }, 200);
+  }
+});
 
-      // Déplacer le bouton No
-      noBtn.style.position = "absolute";
-      noBtn.style.left = Math.random() * 80 + "%";
-      noBtn.style.top = Math.random() * 80 + "%";
+noBtn.addEventListener('click', (event) => {
+  let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+  yesBtn.style.fontSize = (currentSize + 6) + "px";
+  yesBtn.style.padding = "15px 30px";
 
-      // Faire tomber une rose au clic sur No
-      createRose(parseFloat(noBtn.style.left));
-    });
-  </script></body>
+  noBtn.style.position = "absolute";
+  let left = Math.random() * 80;
+  let top = Math.random() * 80;
+  noBtn.style.left = left + "%";
+  noBtn.style.top = top + "%";
+
+  const rect = noBtn.getBoundingClientRect();
+  createRose(rect.left + rect.width/2);
+
+  roseSound.currentTime = 0;
+  roseSound.play().catch(()=>{});
+});
+</script></body>
 </html>
