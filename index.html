@@ -11,11 +11,11 @@
   box-sizing: border-box;
 }body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #f7b2a6, #ffe5d9); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; flex-direction: column; perspective: 1000px; }
 
-/* --- Card Style --- */ .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 25px; text-align: center; width: 320px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 10; transition: transform 0.3s ease; }
+/* --- Card Style --- */ .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 25px; text-align: center; width: 320px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 10; }
 
 img { width: 100%; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
-h2 { margin: 20px 0; font-family: 'Brush Script MT', cursive; font-size: 30px; color: #ff4d6d; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); transition: color 0.3s ease, transform 0.3s ease; animation: pulse 2s infinite; }
+h2 { margin: 20px 0; font-family: 'Brush Script MT', cursive; font-size: 30px; color: #ff4d6d; text-shadow: 2px 2px 5px rgba(0,0,0,0.3); animation: pulse 2s infinite; }
 
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
@@ -27,11 +27,9 @@ button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px;
 
 .no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; } .no:hover { transform: scale(1.1); }
 
-/* --- Roses as Emoji --- */ .rose { position: absolute; font-size: 30px; pointer-events: none; animation: fall 4s linear forwards, sway 2s ease-in-out infinite; z-index: 5; transform-style: preserve-3d; }
+/* --- Roses as Emoji --- */ .rose { position: absolute; font-size: 30px; pointer-events: none; animation: fall 4s linear forwards; z-index: 5; transform-style: preserve-3d; }
 
-@keyframes fall { 0% { transform: translateY(-50px) rotateX(0deg) rotateY(0deg); opacity: 1; } 100% { transform: translateY(80vh) rotateX(360deg) rotateY(360deg); opacity: 1; } }
-
-@keyframes sway { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(20px); } }
+@keyframes fall { 0% { transform: translateY(-50px) translateX(0px) rotateX(0deg) rotateY(0deg); opacity: 1; } 25% { transform: translateY(20vh) translateX(15px) rotateX(90deg) rotateY(45deg); } 50% { transform: translateY(40vh) translateX(-15px) rotateX(180deg) rotateY(90deg); } 75% { transform: translateY(60vh) translateX(10px) rotateX(270deg) rotateY(135deg); } 100% { transform: translateY(80vh) translateX(0px) rotateX(360deg) rotateY(180deg); opacity: 1; } }
 
 /* --- Message Style --- */ #message { margin-top: 25px; font-size: 24px; color: #6a0dad; font-weight: bold; text-align: center; z-index: 15; font-family: 'Lucida Handwriting', cursive; letter-spacing: 2px; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); transform: rotate(-1deg); transition: color 0.3s ease, transform 0.3s ease; } #message.show { transform: rotate(0deg) scale(1.1); color: #8a2be2; } </style>
 
@@ -43,15 +41,12 @@ button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px;
     <button class="yes" id="yesBtn">Yes</button>
     <button class="no" id="noBtn">No</button>
   </div>
-</div><div id="message"></div><audio id="roseSound" src="https://www.soundjay.com/nature/sounds/rain-01.mp3"></audio>
-
-<script>
+</div><div id="message"></div><script>
 let rosesIntervalActive = false;
 let messageShown = false;
 
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
-const roseSound = document.getElementById('roseSound');
 const message = document.getElementById('message');
 
 function createRose(x) {
@@ -78,9 +73,6 @@ yesBtn.addEventListener('click', () => {
   yesBtn.disabled = true;
   noBtn.disabled = true;
 
-  roseSound.currentTime = 0;
-  roseSound.play().catch(()=>{});
-
   if (!rosesIntervalActive) {
     rosesIntervalActive = true;
     setInterval(() => {
@@ -104,9 +96,6 @@ noBtn.addEventListener('click', (event) => {
 
   const rect = noBtn.getBoundingClientRect();
   createRose(rect.left + rect.width/2);
-
-  roseSound.currentTime = 0;
-  roseSound.play().catch(()=>{});
 });
 </script></body>
 </html>
