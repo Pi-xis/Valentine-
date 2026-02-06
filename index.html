@@ -61,10 +61,8 @@ button {
 .yes:hover { transform: scale(1.1); }
 .no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; }
 .no:hover { transform: scale(1.1); }
-.rose { position: absolute; font-size: 30px; pointer-events: none; animation: fall linear forwards; z-index: 5; }
+.rose { position: absolute; font-size: 30px; pointer-events: none; z-index: 5; animation: fall linear forwards; }
 @keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); } 100% { transform: translateY(100vh) rotate(360deg); } }
-#message { margin-top: 25px; font-size: 24px; color: #6a0dad; font-weight: bold; text-align: center; z-index: 15; font-family: 'Lucida Handwriting', cursive; letter-spacing: 2px; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); transform: rotate(-1deg); transition: color 0.3s ease, transform 0.3s ease; }
-#message.show { transform: rotate(0deg) scale(1.1); color: #8a2be2; }
 #thankyou {
   position: fixed;
   inset: 0;
@@ -74,30 +72,22 @@ button {
   align-items: center;
   flex-direction: column;
   z-index: 20;
-  animation: fadeIn 0.8s ease forwards;
 }
 #thankyou h1 {
   font-family: 'Brush Script MT', cursive;
   font-size: 52px;
   color: #ff4d6d;
   margin-bottom: 10px;
-  position: absolute;
+  position: static;
   max-width: 90vw;
   text-align: center;
 }
 #thankyou p {
-  position: absolute;
-  bottom: 40px;
+  position: static;
   max-width: 90vw;
   text-align: center;
-}
-#thankyou p {
   font-size: 20px;
   color: #333;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
 }
 </style>
 </head>
@@ -112,44 +102,65 @@ button {
 </div><div id="thankyou">
   <h1>Thank youuu</h1>
   <p>You just made this moment special.</p>
-</div>
-<script>
-let thankX = 50;
-let thankY = 80;
-let velX = 3;
-let velY = 3;
-let thankInterval = null;
-let rosesIntervalActive = false;const yesBtn = document.getElementById('yesBtn'); const noBtn = document.getElementById('noBtn');
+</div><script>
+let rosesIntervalActive = false;
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
 
-function createRose(x) { const rose = document.createElement('div'); rose.classList.add('rose'); rose.style.left = x + 'px'; rose.style.top = '-60px'; rose.textContent = '🌹'; rose.style.animationDuration = (3 + Math.random() * 2) + 's'; rose.style.zIndex = 1; document.body.appendChild(rose); setTimeout(() => rose.remove(), 6000); }
+function createRose(x) {
+  const rose = document.createElement('div');
+  rose.classList.add('rose');
+  rose.style.left = x + 'px';
+  rose.style.top = '-60px';
+  rose.textContent = '🌹';
+  rose.style.animationDuration = (3 + Math.random() * 2) + 's';
+  document.body.appendChild(rose);
+  setTimeout(() => rose.remove(), 6000);
+}
 
-function rainRoses() { const edges = [ Math.random() * window.innerWidth, 0, window.innerWidth - 30 ]; createRose(Math.random() * window.innerWidth); }
+function rainRoses() {
+  createRose(Math.random() * window.innerWidth);
+}
 
-yesBtn.addEventListener('click', () => { yesBtn.disabled = true; noBtn.disabled = true;
+yesBtn.addEventListener('click', async () => {
+  yesBtn.disabled = true;
+  noBtn.disabled = true;
 
-// Notification (Formspree) fetch('https://formspree.io/f/mykdykgd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: 'YES', time: new Date().toISOString() }) }).catch(() => {});
+  const thankyou = document.getElementById('thankyou');
+  thankyou.style.display = 'flex';
 
-const thankyou = document.getElementById('thankyou'); const thankText = thankyou.querySelector('h1');
+  // Roses pluie sur tout l'écran
+  if (!rosesIntervalActive) {
+    rosesIntervalActive = true;
+    setInterval(() => { for (let i=0; i<10; i++) rainRoses(); }, 120);
+  }
 
-thankyou.style.display = 'flex';
+  // Notification Formspree
+  try {
+    const response = await fetch('https://formspree.io/f/mykdykgd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        answer: 'YES',
+        time: new Date().toISOString(),
+        device: navigator.userAgent,
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight
+      })
+    });
+    if (!response.ok) throw new Error('Formspree request failed');
+    console.log('Notification envoyée ✅');
+  } catch (error) {
+    console.error('Erreur notification:', error);
+  }
+});
 
-if (!thankInterval) { thankInterval = setInterval(() => { for (let i = 0; i < 10; i++) rainRoses(); }, 120);(() => { thankX += velX; thankY += velY;
-
-const maxX = window.innerWidth - thankText.offsetWidth;
-  const maxY = window.innerHeight - thankText.offsetHeight;
-
-  if (thankX <= 0 || thankX >= maxX) velX *= -1;
-  if (thankY <= 0 || thankY >= maxY) velY *= -1;
-
-  // keep text fully inside screen
-
-const safePadding = 10; thankX = Math.max(safePadding, Math.min(thankX, maxX - safePadding)); thankY = Math.max(safePadding, Math.min(thankY, maxY - safePadding)); thankText.style.transform = translate(${thankX}px, ${thankY}px); }, 16); }
-
-if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 8; i++) createRose(Math.random() * window.innerWidth); }, 120); } });
-
-noBtn.addEventListener('click', () => { let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize); yesBtn.style.fontSize = (currentSize + 6) + 'px'; yesBtn.style.padding = '15px 30px'; noBtn.style.position = 'absolute'; noBtn.style.left = Math.random() * 80 + '%'; noBtn.style.top = Math.random() * 80 + '%';
-
-const rect = noBtn.getBoundingClientRect(); createRose(rect.left + rect.width / 2); }); </script>
-
-</body>
+noBtn.addEventListener('click', () => {
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = Math.random() * 80 + '%';
+  noBtn.style.top = Math.random() * 80 + '%';
+  const rect = noBtn.getBoundingClientRect();
+  createRose(rect.left + rect.width/2);
+});
+</script></body>
 </html>
