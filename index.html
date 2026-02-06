@@ -11,7 +11,7 @@
   box-sizing: border-box;
 }body { font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #f7b2a6, #ffe5d9); display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; flex-direction: column; perspective: 1000px; }
 
-/* --- Card Style --- */ .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 25px; text-align: center; width: 320px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 10; transition: transform 0.3s ease; } .card:hover { transform: scale(1.05) rotateY(10deg); }
+/* --- Card Style --- */ .card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 25px; text-align: center; width: 320px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 10; transition: transform 0.3s ease; }
 
 img { width: 100%; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
@@ -21,11 +21,11 @@ h2:hover { color: #ff7090; }
 
 /* --- Buttons --- */ .buttons { display: flex; justify-content: space-around; margin-top: 20px; }
 
-button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transform-style: preserve-3d; }
+button { padding: 12px 25px; border: none; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-.yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; } .yes:hover { transform: scale(1.1) rotateY(10deg); }
+.yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; } .yes:hover { transform: scale(1.1); }
 
-.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; } .no:hover { transform: scale(1.1) rotateY(10deg); }
+.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; } .no:hover { transform: scale(1.1); }
 
 /* --- Roses as Emoji --- */ .rose { position: absolute; font-size: 30px; pointer-events: none; animation: fall 4s linear forwards; z-index: 5; transform-style: preserve-3d; }
 
