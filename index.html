@@ -81,6 +81,8 @@ button {
   font-size: 52px;
   color: #ff4d6d;
   margin-bottom: 10px;
+  position: absolute;
+  animation: none;
 }
 #thankyou p {
   font-size: 20px;
@@ -105,11 +107,33 @@ button {
   <p>You just made this moment special.</p>
 </div>
 <script>
+let thankX = 100;
+let thankY = 100;
+let velX = 2.2;
+let velY = 2.8;
 let rosesIntervalActive = false;function createRose(x) { const rose = document.createElement('div'); rose.classList.add('rose'); rose.style.left = x + 'px'; rose.style.top = '-50px'; rose.innerText = '🌹'; rose.style.animationDuration = (3 + Math.random()*2) + 's'; document.body.appendChild(rose); setTimeout(() => { rose.remove(); }, 5000); }
 
 yesBtn.addEventListener('click', () => { let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize); yesBtn.style.fontSize = (currentSize + 6) + "px"; yesBtn.style.padding = "15px 30px"; yesBtn.disabled = true; noBtn.disabled = true;
 
+// 🔔 Notify you when she clicks YES (Formspree) fetch("https://formspree.io/f/XXXXYYYY", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ answer: "YES", time: new Date().toLocaleString(), device: navigator.userAgent }) }).catch(() => {});
+
 document.getElementById('thankyou').style.display = 'flex';
+
+if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 6; i++) createRose(Math.random() * window.innerWidth); }, 120); } }); yesBtn.style.fontSize = (currentSize + 6) + "px"; yesBtn.style.padding = "15px 30px"; yesBtn.disabled = true; noBtn.disabled = true;
+
+document.getElementById('thankyou').style.display = 'flex'; const thankText = document.querySelector('#thankyou h1'); const container = document.getElementById('thankyou');
+
+setInterval(() => { thankX += velX; thankY += velY;
+
+const maxX = container.clientWidth - thankText.offsetWidth;
+const maxY = container.clientHeight - thankText.offsetHeight;
+
+if (thankX <= 0 || thankX >= maxX) velX *= -1;
+if (thankY <= 0 || thankY >= maxY) velY *= -1;
+
+thankText.style.transform = `translate(${thankX}px, ${thankY}px)`;
+
+}, 16);
 
 if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 6; i++) createRose(Math.random() * window.innerWidth); }, 120); } });
 
