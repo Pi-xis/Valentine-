@@ -76,15 +76,10 @@ button {
     <button class="no" id="noBtn">No</button>
   </div>
 </div>
-<div id="message"></div>
 <script>
-let rosesIntervalActive = false;
-let messageShown = false;
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
-const message = document.getElementById('message');function createRose(x) { const rose = document.createElement('div'); rose.classList.add('rose'); rose.style.left = x + 'px'; rose.style.top = '-50px'; rose.innerText = '🌹'; rose.style.animationDuration = (3 + Math.random()*2) + 's'; document.body.appendChild(rose); setTimeout(() => { rose.remove(); }, 5000); }
+let rosesIntervalActive = false;function createRose(x) { const rose = document.createElement('div'); rose.classList.add('rose'); rose.style.left = x + 'px'; rose.style.top = '-50px'; rose.innerText = '🌹'; rose.style.animationDuration = (3 + Math.random()*2) + 's'; document.body.appendChild(rose); setTimeout(() => { rose.remove(); }, 5000); }
 
-yesBtn.addEventListener('click', () => { let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize); yesBtn.style.fontSize = (currentSize + 6) + "px"; yesBtn.style.padding = "15px 30px"; if (!messageShown) { message.innerText = "Irresistible as always!"; message.classList.add('show'); messageShown = true; } yesBtn.disabled = true; noBtn.disabled = true; if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 5; i++) createRose(Math.random() * window.innerWidth); }, 150); } });
+yesBtn.addEventListener('click', () => { let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize); yesBtn.style.fontSize = (currentSize + 6) + "px"; yesBtn.style.padding = "15px 30px";  yesBtn.disabled = true; noBtn.disabled = true; if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 5; i++) createRose(Math.random() * window.innerWidth); }, 150); } });
 
 noBtn.addEventListener('click', (event) => { let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize); yesBtn.style.fontSize = (currentSize + 6) + "px"; yesBtn.style.padding = "15px 30px"; noBtn.style.position = "absolute"; noBtn.style.left = Math.random() * 80 + "%"; noBtn.style.top = Math.random() * 80 + "%"; const rect = noBtn.getBoundingClientRect(); createRose(rect.left + rect.width/2); }); </script>
 
