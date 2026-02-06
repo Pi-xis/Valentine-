@@ -82,7 +82,14 @@ button {
   color: #ff4d6d;
   margin-bottom: 10px;
   position: absolute;
-  animation: none;
+  max-width: 90vw;
+  text-align: center;
+}
+#thankyou p {
+  position: absolute;
+  bottom: 40px;
+  max-width: 90vw;
+  text-align: center;
 }
 #thankyou p {
   font-size: 20px;
@@ -108,23 +115,25 @@ button {
 </div>
 <script>
 let thankX = 50;
-let thankY = 50;
+let thankY = 80;
 let velX = 3;
 let velY = 3;
 let thankInterval = null;
 let rosesIntervalActive = false;const yesBtn = document.getElementById('yesBtn'); const noBtn = document.getElementById('noBtn');
 
-function createRose(x) { const rose = document.createElement('div'); rose.classList.add('rose'); rose.style.left = x + 'px'; rose.style.top = '-60px'; rose.textContent = '🌹'; rose.style.animationDuration = (3 + Math.random() * 2) + 's'; document.body.appendChild(rose); setTimeout(() => rose.remove(), 6000); }
+function createRose(x) { const rose = document.createElement('div'); rose.classList.add('rose'); rose.style.left = x + 'px'; rose.style.top = '-60px'; rose.textContent = '🌹'; rose.style.animationDuration = (3 + Math.random() * 2) + 's'; rose.style.zIndex = 1; document.body.appendChild(rose); setTimeout(() => rose.remove(), 6000); }
+
+function rainRoses() { const edges = [ Math.random() * window.innerWidth, 0, window.innerWidth - 30 ]; createRose(Math.random() * window.innerWidth); }
 
 yesBtn.addEventListener('click', () => { yesBtn.disabled = true; noBtn.disabled = true;
 
-// Notification (Formspree) fetch('https://formspree.io/f/XXXXYYYY', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: 'YES', time: new Date().toISOString() }) }).catch(() => {});
+// Notification (Formspree) fetch('https://formspree.io/f/mykdykgd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: 'YES', time: new Date().toISOString() }) }).catch(() => {});
 
 const thankyou = document.getElementById('thankyou'); const thankText = thankyou.querySelector('h1');
 
 thankyou.style.display = 'flex';
 
-if (!thankInterval) { thankInterval = setInterval(() => { thankX += velX; thankY += velY;
+if (!thankInterval) { thankInterval = setInterval(() => { for (let i = 0; i < 10; i++) rainRoses(); }, 120);(() => { thankX += velX; thankY += velY;
 
 const maxX = window.innerWidth - thankText.offsetWidth;
   const maxY = window.innerHeight - thankText.offsetHeight;
@@ -132,10 +141,9 @@ const maxX = window.innerWidth - thankText.offsetWidth;
   if (thankX <= 0 || thankX >= maxX) velX *= -1;
   if (thankY <= 0 || thankY >= maxY) velY *= -1;
 
-  thankText.style.transform = `translate(${thankX}px, ${thankY}px)`;
-}, 16);
+  // keep text fully inside screen
 
-}
+const safePadding = 10; thankX = Math.max(safePadding, Math.min(thankX, maxX - safePadding)); thankY = Math.max(safePadding, Math.min(thankY, maxY - safePadding)); thankText.style.transform = translate(${thankX}px, ${thankY}px); }, 16); }
 
 if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 8; i++) createRose(Math.random() * window.innerWidth); }, 120); } });
 
