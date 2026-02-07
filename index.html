@@ -79,22 +79,49 @@ button {
   display: flex;
   opacity: 1;
 }
-#thankyou.show {
-  display: flex;
-  opacity: 1;
-}
 #thankyou h1 {
   font-family: 'Brush Script MT', cursive;
   font-size: 56px;
   color: #ff4d6d;
   margin-bottom: 14px;
   text-align: center;
-  letter-spacing: 1px;/* Halo lumineux doux */ text-shadow: 0 0 8px rgba(255, 77, 109, 0.35), 0 0 18px rgba(255, 123, 156, 0.25), 0 0 28px rgba(255, 123, 156, 0.15);
-
-/* BLOQUER TOUT MOUVEMENT */ animation: none !important; transform: none !important; transition: none !important; position: static; } #thankyou p { font-size: 21px; color: #5a2a2a; text-align: center; max-width: 80%; line-height: 1.4;
-
-animation: none !important; transform: none !important; transition: none !important; position: static; } #thankyou h1, #thankyou p { text-align: center; } #thankyou h1 { font-family: 'Brush Script MT', cursive; font-size: 52px; color: #ff4d6d; margin-bottom: 10px; position: static; /* Texte fixe / } #thankyou p { font-size: 20px; color: #333; position: static; / Texte fixe */ } </style>
-
+  letter-spacing: 1px;
+  text-shadow:
+    0 0 8px rgba(255, 77, 109, 0.35),
+    0 0 18px rgba(255, 123, 156, 0.25),
+    0 0 28px rgba(255, 123, 156, 0.15);
+  animation: none !important;
+  transform: none !important;
+  transition: none !important;
+  position: static;
+}
+#thankyou p {
+  font-size: 21px;
+  color: #5a2a2a;
+  text-align: center;
+  max-width: 80%;
+  line-height: 1.4;
+  animation: none !important;
+  transform: none !important;
+  transition: none !important;
+  position: static;
+}
+#notification {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.9);
+  padding: 10px 20px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  font-size: 16px;
+  color: #333;
+  display: none;
+  z-index: 30;
+  text-align: center;
+}
+</style>
 </head>
 <body>
 <div class="card">
@@ -107,10 +134,11 @@ animation: none !important; transform: none !important; transition: none !import
 </div><div id="thankyou">
   <h1>Thank youuu</h1>
   <p>You just made this moment special.</p>
-</div><script>
+</div><div id="notification">✓ Sent</div><script>
 let rosesIntervalActive = false;
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
+const notification = document.getElementById('notification');
 
 function createRose(x) {
   const rose = document.createElement('div');
@@ -131,10 +159,7 @@ yesBtn.addEventListener('click', async () => {
   yesBtn.disabled = true;
   noBtn.disabled = true;
 
-  // Vibration douce mobile
-  if (navigator.vibrate) {
-    navigator.vibrate(20);
-  }
+  if (navigator.vibrate) navigator.vibrate(20);
 
   const thankyou = document.getElementById('thankyou');
   thankyou.style.display = 'flex';
@@ -157,31 +182,11 @@ yesBtn.addEventListener('click', async () => {
         screenHeight: window.innerHeight
       })
     });
-  } catch (error) {
-    console.error('Erreur notification:', error);
-  }
-});
-  thankyou.classList.add('show');
 
-  // Roses pluie sur tout l'écran
-  if (!rosesIntervalActive) {
-    rosesIntervalActive = true;
-    setInterval(() => { for (let i=0; i<10; i++) rainRoses(); }, 120);
-  }
+    // Affiche notification
+    notification.style.display = 'block';
+    setTimeout(() => notification.style.display = 'none', 2000);
 
-  // Notification Formspree
-  try {
-    await fetch('https://formspree.io/f/mykdykgd', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        answer: 'YES',
-        time: new Date().toISOString(),
-        device: navigator.userAgent,
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight
-      })
-    });
   } catch (error) {
     console.error('Erreur notification:', error);
   }
@@ -189,24 +194,12 @@ yesBtn.addEventListener('click', async () => {
 
 noBtn.addEventListener('click', () => {
   noBtn.style.position = 'absolute';
-  noBtn.style.left = Math.random() * (window.innerWidth - noBtn.offsetWidth) + 'px';
-  noBtn.style.top = Math.random() * (window.innerHeight - noBtn.offsetHeight) + 'px';
+  noBtn.style.left = Math.random() * 80 + '%';
+  noBtn.style.top = Math.random() * 80 + '%';
 
-  const rect = noBtn.getBoundingClientRect();
-
-  // Roses visibles et garanties à chaque clic
-  for (let i = 0; i < 8; i++) {
-    createRose(rect.left + Math.random() * rect.width);
+  for (let i = 0; i < 5; i++) {
+    createRose(Math.random() * window.innerWidth);
   }
-});
-
-    // Plusieurs roses visibles à chaque clic sur NO
-    for (let i = 0; i < 6; i++) {
-      createRose(rect.left + Math.random() * rect.width);
-    }
-  });
-});
-  createRose(rect.left + rect.width/2);
 });
 </script></body>
 </html>
