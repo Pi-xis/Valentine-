@@ -115,30 +115,28 @@ button {
 </div>
 <div id="notification">✓ Sent</div>
 <script>
-let yesScale = 1;
-let rosesIntervalActive = false;function createRose(x,duration=4){ const rose = document.createElement('div'); rose.className='rose'; rose.textContent='🌹'; rose.style.left = x+'px'; rose.style.top = '-60px'; rose.style.animationDuration = duration+'s'; document.body.appendChild(rose); setTimeout(()=>rose.remove(),duration*1000); }
+// === BOUTONS (VERSION SIMPLE ET STABLE) ===
+const yesBtn = document.getElementById('yesBtn');
+const noBtn  = document.getElementById('noBtn');
+const thankyou = document.getElementById('thankyou');let yesScale = 1;
 
-// Utiliser le code original des boutons qui marchait const noBtn = document.getElementById('noBtn'); const yesBtn = document.getElementById('yesBtn');
+// ROSES AVEC HALO function createRose(){ const rose = document.createElement('div'); rose.className = 'rose'; rose.textContent = '🌹'; rose.style.left = Math.random() * window.innerWidth + 'px'; rose.style.animationDuration = '5s'; rose.style.filter = 'drop-shadow(0 0 8px rgba(255,0,80,0.6))'; document.body.appendChild(rose); setTimeout(()=>rose.remove(),5000); }
 
-noBtn.addEventListener('click', function(){ // NO se déplace mais reste dans l'écran const margin = 10; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin; noBtn.style.position='fixed'; noBtn.style.left = Math.random()*maxX + 'px'; noBtn.style.top  = Math.random()*maxY + 'px';
+// NO : BOUGE MAIS RESTE À L'ÉCRAN noBtn.onclick = () => { const maxX = window.innerWidth - noBtn.offsetWidth - 20; const maxY = window.innerHeight - noBtn.offsetHeight - 20;
 
-// YES grossit à chaque clic yesScale += 0.7; if(yesScale>3) yesScale=3; yesBtn.style.transform = scale(${yesScale});
+noBtn.style.position = 'fixed'; noBtn.style.left = Math.random() * maxX + 'px'; noBtn.style.top  = Math.random() * maxY + 'px';
 
-// Une rose tombe createRose(Math.random()*window.innerWidth,4); });
+yesScale += 0.8; if(yesScale > 3.5) yesScale = 3.5; yesBtn.style.transform = scale(${yesScale});
 
-yesBtn.addEventListener('click', async function(){ const thankyou = document.getElementById('thankyou'); const thankText = thankyou.querySelectorAll('h1,p'); const notification = document.getElementById('notification');
+createRose(); };
 
-// Désactiver les boutons mais les garder visibles yesBtn.disabled=true; noBtn.disabled=true;
+// YES : AFFICHE LE DEUXIÈME DASHBOARD yesBtn.onclick = () => { thankyou.style.display = 'flex';
 
-if(navigator.vibrate) navigator.vibrate(40);
+// roses en premier plan for(let i=0;i<20;i++) createRose();
 
-// Affiche le dashboard Thank you uniquement après YES thankyou.style.display='flex'; thankText.forEach(el=>el.style.display='block'); setTimeout(()=>thankyou.classList.add('show'),10);
+// vibration mobile if(navigator.vibrate) navigator.vibrate([30,40,30]);
 
-// Faire disparaître uniquement le texte après 2s, dashboard reste setTimeout(()=>{ thankText.forEach(el=>el.style.display='none'); },2000);
-
-// Multitude de roses tombent après YES if(!rosesIntervalActive){ rosesIntervalActive=true; setInterval(()=>{ for(let i=0;i<12;i++) createRose(Math.random()*window.innerWidth,4); },300); }
-
-// Envoi Formspree try{ await fetch('https://formspree.io/f/mykdykgd',{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({answer:'YES'})}); notification.style.display='block'; setTimeout(()=>notification.style.display='none',600); }catch(e){console.error(e);} }); </script>
+// texte disparaît après 2s, dashboard reste setTimeout(()=>{ thankyou.querySelector('h1').style.display='none'; thankyou.querySelector('p').style.display='none'; },2000); }; </script>
 
 </body>
 </html>
