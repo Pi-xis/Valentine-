@@ -62,7 +62,7 @@ button {
 .no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; }
 .no:hover { transform: scale(1.1); }
 .rose { position: absolute; font-size: 30px; pointer-events: none; z-index: 5; animation: fall linear forwards; }
-@keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); } 100% { transform: translateY(100vh) rotate(360deg); } }
+@keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
 #thankyou {
   position: fixed;
   inset: 0;
@@ -146,9 +146,9 @@ function createRose(x) {
   rose.textContent = '🌹';
   rose.style.left = x + 'px';
   rose.style.top = '-80px';
-  rose.style.animationDuration = (3 + Math.random() * 2) + 's';
+  rose.style.animationDuration = (2 + Math.random() * 1) + 's'; // plus rapide
   document.body.appendChild(rose);
-  setTimeout(() => rose.remove(), 7000);
+  setTimeout(() => rose.remove(), 3000); // disparaît plus vite
 }
 
 function rainRoses() {
@@ -183,9 +183,8 @@ yesBtn.addEventListener('click', async () => {
       })
     });
 
-    // Affiche notification
     notification.style.display = 'block';
-    setTimeout(() => notification.style.display = 'none', 2000);
+    setTimeout(() => notification.style.display = 'none', 1000); // disparaît plus vite
 
   } catch (error) {
     console.error('Erreur notification:', error);
