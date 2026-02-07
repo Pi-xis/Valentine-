@@ -193,13 +193,13 @@
 
     // NO button: moves but NEVER leaves the screen
     noBtn.onclick = () => {
-      const margin = 20;
+      const margin = 80; // larger margin so NO never goes too far on mobile
       const maxX = window.innerWidth - noBtn.offsetWidth - margin;
       const maxY = window.innerHeight - noBtn.offsetHeight - margin;
 
       noBtn.style.position = 'fixed';
-      noBtn.style.left = Math.max(margin, Math.random() * maxX) + 'px';
-      noBtn.style.top = Math.max(margin, Math.random() * maxY) + 'px';
+      noBtn.style.left = Math.min(Math.max(margin, Math.random() * maxX), maxX) + 'px';
+      noBtn.style.top = Math.min(Math.max(margin, Math.random() * maxY), maxY) + 'px';
 
       // YES grows
       yesScale += 0.8;
