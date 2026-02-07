@@ -66,12 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const thankyou = document.getElementById('thankyou');
   const notification = document.getElementById('notification');
   let yesScale = 1;
+  let rosesInterval = null; // Pour pluie continue après YES
 
-  // Crée une rose en continu
-  function createRoseAtRandom() {
+  function createRose() {
     const rose = document.createElement('div');
-    rose.className='rose';
-    rose.textContent='🌹';
+    rose.className = 'rose';
+    rose.textContent = '🌹';
     rose.style.left = Math.random()*(window.innerWidth-30)+'px';
     rose.style.top = '-50px';
     document.body.appendChild(rose);
@@ -79,9 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     rose.animate([{transform:'translateY(0)'},{transform:`translateY(${window.innerHeight}px)`}], {duration:duration, iterations:1, easing:'linear'});
     setTimeout(()=>rose.remove(), duration);
   }
-
-  // Roses continues toutes les 300ms
-  setInterval(createRoseAtRandom, 300);
 
   // NO bouton
   noBtn.addEventListener('click', () => {
@@ -98,13 +95,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(navigator.vibrate) navigator.vibrate(15);
 
-    // YES grossit et oscille légèrement
+    // YES grossit
     yesScale += 0.5;
     if(yesScale>4) yesScale=4;
     yesBtn.style.transform = `scale(${yesScale}) rotate(${Math.random()*10-5}deg)`;
 
-    // Une rose à chaque NO
-    createRoseAtRandom();
+    // Une rose par NO
+    createRose();
   });
 
   // YES bouton
@@ -112,25 +109,29 @@ document.addEventListener('DOMContentLoaded', () => {
     thankyou.style.display='flex';
     requestAnimationFrame(()=>thankyou.style.opacity='1');
 
-    // Pluie de roses continues après YES
-    for(let i=0;i<30;i++) createRoseAtRandom();
-
     if(navigator.vibrate) navigator.vibrate([30,40,30]);
 
-    // Notification et email via Formspree (code fonctionnel)
+    // Notification
     notification.style.display='block';
     setTimeout(()=>{notification.style.display='none';},2000);
 
+    // Email via Formspree
     fetch('https://formspree.io/f/mykdykgd', {
-      method:'POST',
+      method: 'POST',
       headers: { 'Content-Type':'application/json' },
-      body: JSON.stringify({email:'user@example.com', message:'Yes clicked on Valentine site'})
+      body: JSON.stringify({email:'ppittjerry@gmail.com', message:'Yes clicked on Valentine site'})
     }).catch(()=>alert('Email failed to send'));
 
+    // Disparition du texte après 2 secondes
     setTimeout(()=>{
       thankyou.querySelector('h1').style.display='none';
       thankyou.querySelector('p').style.display='none';
     },2000);
+
+    // Pluie de roses continue après YES
+    if(!rosesInterval){
+      rosesInterval = setInterval(createRose, 300);
+    }
   });
 });
 </script>
