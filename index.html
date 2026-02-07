@@ -52,15 +52,14 @@
   setTimeout(()=>rose.remove(),5000);
 }
 
-// --- Boutons d'origine avec limite pour NO ---
+// --- Boutons d'origine avec NO limité au cadre ---
 noBtn.onclick = () => {
-  const margin = 40;
+  const margin = 20; // marges réduites pour rester dans l'écran
   const maxX = window.innerWidth - noBtn.offsetWidth - margin;
   const maxY = window.innerHeight - noBtn.offsetHeight - margin;
   const minX = margin;
   const minY = margin;
 
-  // Limiter NO pour qu'il reste à l'écran
   const x = minX + Math.random()*(maxX - minX);
   const y = minY + Math.random()*(maxY - minY);
 
