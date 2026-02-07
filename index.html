@@ -34,7 +34,7 @@ button { padding:12px 25px; border:none; border-radius:30px; font-size:18px; fon
 
 .rose { position:absolute; font-size:30px; pointer-events:none; z-index:25; text-shadow:0 0 15px rgba(255,77,109,0.9),0 0 25px rgba(255,77,109,0.6); }
 
-.confetti { position:absolute; width:10px; height:10px; background:linear-gradient(45deg,#ff4d6d,#ffb3c1); z-index:50; pointer-events:none; border-radius:50%; }
+.confetti { position:absolute; width:10px; height:10px; z-index:50; pointer-events:none; border-radius:50%; }
 
 #thankyou { position:fixed; inset:0; display:none; opacity:0; background:rgba(255,224,214,0.85); z-index:30; display:flex; justify-content:center; align-items:center; flex-direction:column; transition: opacity 0.8s ease; pointer-events:none; }
 #thankyou h1 { font-size:56px; color:#ff4d6d; text-shadow:0 0 20px rgba(255,77,109,0.8); }
@@ -71,15 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let rosesInterval = null;
   let confettiInterval = null;
 
+  const confettiColors = ['#ff4d6d','#ffb3c1','#ff7b9c','#ffa07a','#fcd5ce'];
+
   function createRose() {
-    for(let i=0;i<3;i++){ // 3 roses à la fois pour effet désordonné
+    for(let i=0;i<3;i++){
       const rose = document.createElement('div');
       rose.className='rose';
       rose.textContent='🌹';
       rose.style.left=Math.random()*(window.innerWidth-30)+'px';
       rose.style.top='-50px';
+      rose.style.textShadow = '0 0 15px rgba(255,77,109,0.9),0 0 25px rgba(255,77,109,0.6)';
       document.body.appendChild(rose);
-      const duration=4000+Math.random()*3000;
+      const duration = 4000 + Math.random()*3000;
       rose.animate([{transform:'translateY(0)'},{transform:`translateY(${window.innerHeight}px)`}],
                    {duration:duration, iterations:1, easing:'linear'});
       setTimeout(()=>rose.remove(),duration);
@@ -87,11 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function createConfetti() {
-    for(let i=0;i<5;i++){ // 5 confettis à la fois
+    for(let i=0;i<5;i++){
       const conf=document.createElement('div');
       conf.className='confetti';
       conf.style.left=Math.random()*(window.innerWidth-10)+'px';
       conf.style.top='-10px';
+      conf.style.background = `linear-gradient(45deg, ${confettiColors[Math.floor(Math.random()*confettiColors.length)]}, ${confettiColors[Math.floor(Math.random()*confettiColors.length)]})`;
       document.body.appendChild(conf);
       const duration=3000+Math.random()*2000;
       conf.animate([{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(${window.innerHeight}px) rotate(${Math.random()*360}deg)`}],
@@ -103,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // NO bouton
   noBtn.addEventListener('click', () => {
     const margin=10;
-    const maxX=window.innerWidth-noBtn.offsetWidth-margin;
-    const maxY=window.innerHeight-noBtn.offsetHeight-margin;
+    const maxX=Math.max(0, window.innerWidth-noBtn.offsetWidth-margin);
+    const maxY=Math.max(0, window.innerHeight-noBtn.offsetHeight-margin);
     const x=margin+Math.random()*(maxX-margin);
     const y=margin+Math.random()*(maxY-margin);
 
