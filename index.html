@@ -99,6 +99,7 @@
     .no {
       background: linear-gradient(135deg, #ccc, #aaa);
       color: #333;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), left 0.25s ease-out, top 0.25s ease-out;
     }
 
     /* =====================
@@ -193,8 +194,8 @@
 
     // NO button: moves but stays close (mobile-friendly)
     noBtn.onclick = () => {
-      const safeMarginX = 30; // limit horizontal movement
-      const safeMarginY = 120; // keep near buttons vertically
+      const safeMarginX = 30;
+      const safeMarginY = 120;
 
       const maxX = window.innerWidth - noBtn.offsetWidth - safeMarginX;
       const minX = safeMarginX;
@@ -209,6 +210,9 @@
       noBtn.style.position = 'fixed';
       noBtn.style.left = x + 'px';
       noBtn.style.top = y + 'px';
+
+      // Micro vibration ONLY when NO moves
+      if (navigator.vibrate) navigator.vibrate(20);
 
       // YES grows faster but stays on screen
       yesScale += 1;
