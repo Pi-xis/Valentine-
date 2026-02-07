@@ -1,8 +1,9 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine v2</title>
+<title>Valentine Final</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -16,7 +17,6 @@ body {
   overflow: hidden;
   flex-direction: column;
   animation: gradientShift 15s ease infinite;
-  pointer-events: auto;
 }
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
@@ -32,7 +32,6 @@ body {
   box-shadow: 0 15px 40px rgba(0,0,0,0.3);
   z-index: 10;
   animation: pulseCard 2s infinite;
-  pointer-events: auto;
 }
 @keyframes pulseCard { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
 img { width: 100%; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
@@ -80,7 +79,6 @@ button {
   z-index:20;
   opacity:0;
   transition: opacity 0.7s ease;
-  pointer-events: none;
 }
 #thankyou.show { display:flex; opacity:1; }
 #thankyou h1, #thankyou p {
@@ -116,8 +114,8 @@ button {
   <img src="https://wallpapercave.com/wp/wp8365768.png" alt="Minions Valentine">
   <h2>Will you be my Valentine?</h2>
   <div class="buttons">
-    <button class="yes" id="yesBtn" onclick="handleYes()">Yes</button>
-    <button class="no" id="noBtn" onclick="handleNo()">No</button>
+    <button class="yes" id="yesBtn">Yes</button>
+    <button class="no" id="noBtn">No</button>
   </div>
 </div>
 <div id="thankyou">
@@ -127,34 +125,82 @@ button {
 <div id="notification">✓ Sent</div>
 <script>
 let yesScale = 1;
-let rosesIntervalActive = false;function createRose(x, duration = 4) { const rose = document.createElement('div'); rose.className = 'rose'; rose.textContent = '🌹'; rose.style.left = x + 'px'; rose.style.top = '-60px'; rose.style.animationDuration = duration + 's'; document.body.appendChild(rose); setTimeout(() => rose.remove(), duration * 1000); }
+let rosesIntervalActive = false;
 
-function handleNo() { const noBtn = document.getElementById('noBtn'); const yesBtn = document.getElementById('yesBtn'); const margin = 40; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+function createRose(x, duration = 4) {
+  const rose = document.createElement('div');
+  rose.className = 'rose';
+  rose.textContent = '🌹';
+  rose.style.left = x + 'px';
+  rose.style.top = '-60px';
+  rose.style.animationDuration = duration + 's';
+  document.body.appendChild(rose);
+  setTimeout(() => rose.remove(), duration * 1000);
+}
 
-noBtn.style.position = 'fixed'; noBtn.style.left = (margin + Math.random() * maxX) + 'px'; noBtn.style.top  = (margin + Math.random() * maxY) + 'px';
+function handleNo() {
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const margin = 40;
+  const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+  const maxY = window.innerHeight - noBtn.offsetHeight - margin;
 
-yesScale += 0.5; if (yesScale > 3) yesScale = 3; yesBtn.style.transform = scale(${yesScale});
+  noBtn.style.position = 'fixed';
+  noBtn.style.left = (margin + Math.random() * maxX) + 'px';
+  noBtn.style.top  = (margin + Math.random() * maxY) + 'px';
 
-createRose(Math.random() * window.innerWidth, 4); }
+  yesScale += 0.5;
+  if (yesScale > 3) yesScale = 3;
+  yesBtn.style.transform = `scale(${yesScale})`;
 
-async function handleYes() { const yesBtn = document.getElementById('yesBtn'); const noBtn = document.getElementById('noBtn'); const thankyou = document.getElementById('thankyou'); const notification = document.getElementById('notification');
+  createRose(Math.random() * window.innerWidth, 4);
+}
 
-yesBtn.disabled = true; noBtn.disabled = true;
+async function handleYes() {
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
+  const thankyou = document.getElementById('thankyou');
+  const notification = document.getElementById('notification');
 
-if (navigator.vibrate) navigator.vibrate(40);
+  yesBtn.disabled = true;
+  noBtn.disabled = true;
 
-thankyou.style.display = 'flex'; setTimeout(() => thankyou.classList.add('show'), 10);
+  if (navigator.vibrate) navigator.vibrate(40);
 
-setTimeout(() => { thankyou.classList.remove('show'); setTimeout(() => thankyou.style.display = 'none', 700); }, 4000);
+  thankyou.style.display = 'flex';
+  setTimeout(() => thankyou.classList.add('show'), 10);
 
-if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 12; i++) { createRose(Math.random() * window.innerWidth, 4); } }, 300); }
+  setTimeout(() => {
+    thankyou.classList.remove('show');
+    setTimeout(() => thankyou.style.display = 'none', 700);
+  }, 4000);
 
-try { await fetch('https://formspree.io/f/mykdykgd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: 'YES' }) });
+  if (!rosesIntervalActive) {
+    rosesIntervalActive = true;
+    setInterval(() => {
+      for (let i = 0; i < 12; i++) {
+        createRose(Math.random() * window.innerWidth, 4);
+      }
+    }, 300);
+  }
 
-notification.style.display = 'block';
-setTimeout(() => notification.style.display = 'none', 600);
+  try {
+    await fetch('https://formspree.io/f/mykdykgd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answer: 'YES' })
+    });
 
-} catch (e) { console.error(e); } } </script>
+    notification.style.display = 'block';
+    setTimeout(() => notification.style.display = 'none', 600);
+  } catch (e) {
+    console.error(e);
+  }
+}
 
+// ✅ Attach event listeners (version sûre pour Chrome/Vercel)
+document.getElementById('yesBtn').addEventListener('click', handleYes);
+document.getElementById('noBtn').addEventListener('click', handleNo);
+</script>
 </body>
 </html>
