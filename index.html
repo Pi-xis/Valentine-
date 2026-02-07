@@ -55,15 +55,58 @@ button {
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 .yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; transition: transform 0.2s ease; }
-.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; transition: transform 0.2s ease; }
-.rose { position: absolute; font-size: 30px; pointer-events: none; z-index: 5; animation: fall linear forwards; transform-style: preserve-3d; }
-@keyframes fall { 0% { transform: translateY(-50px) rotateX(0deg) rotateY(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotateX(360deg) rotateY(360deg); opacity: 0; } }
-#thankyou { position: fixed; inset: 0; background: radial-gradient(circle at top, #ffe0d6, #f7b2a6); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 20; opacity: 0; transition: opacity 0.7s ease; }
+.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; transition: transform 0.3s ease; }
+.rose {
+  position: absolute;
+  font-size: 30px;
+  pointer-events: none;
+  z-index: 5;
+  animation: fall linear forwards;
+  transform-style: preserve-3d;
+}
+@keyframes fall {
+  0% { transform: translateY(-50px) rotateX(0deg) rotateY(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotateX(360deg) rotateY(360deg); opacity: 0; }
+}
+#thankyou {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, #ffe0d6, #f7b2a6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
 #thankyou.show { display: flex; opacity: 1; }
-#thankyou h1, #thankyou p { animation: none !important; transform: none !important; transition: none !important; position: static; text-align: center; color: #ff4d6d; }
-#thankyou h1 { font-size: 56px; text-shadow: 0 0 8px rgba(255,77,109,0.35), 0 0 18px rgba(255,123,156,0.25), 0 0 28px rgba(255,123,156,0.15); }
+#thankyou h1, #thankyou p {
+  animation: none !important;
+  transform: none !important;
+  transition: none !important;
+  position: static;
+  text-align: center;
+  color: #ff4d6d;
+  text-shadow: 0 0 12px rgba(255,77,109,0.5);
+}
+#thankyou h1 { font-size: 56px; }
 #thankyou p { font-size: 21px; color: #5a2a2a; }
-#notification { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.9); padding: 10px 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-size: 16px; color: #333; display: none; z-index: 30; text-align: center; }
+#notification {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.9);
+  padding: 10px 20px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  font-size: 16px;
+  color: #333;
+  display: none;
+  z-index: 30;
+  text-align: center;
+}
 </style>
 </head>
 <body>
@@ -96,9 +139,9 @@ if(!rosesIntervalActive){ rosesIntervalActive=true; setInterval(()=>{for(let i=0
 
 try{ await fetch('https://formspree.io/f/mykdykgd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answer:'YES',time:new Date().toISOString(),device:navigator.userAgent,screenWidth:window.innerWidth,screenHeight:window.innerHeight})}); notification.style.display='block'; setTimeout(()=>notification.style.display='none',300); }catch(e){console.error(e);} });
 
-noBtn.addEventListener('click',()=>{ // NO bouge comme dans l'idée principale const maxX=window.innerWidth-noBtn.offsetWidth; const maxY=window.innerHeight-noBtn.offsetHeight; noBtn.style.position='absolute'; noBtn.style.left=Math.random()*maxX+'px'; noBtn.style.top=Math.random()*maxY+'px';
+noBtn.addEventListener('click',()=>{ // NO bouge aléatoirement sur tout l'écran const maxX=window.innerWidth-noBtn.offsetWidth; const maxY=window.innerHeight-noBtn.offsetHeight; noBtn.style.position='absolute'; noBtn.style.left=Math.random()*maxX+'px'; noBtn.style.top=Math.random()*maxY+'px';
 
-// Yes grossit légèrement yesBtn.style.transform='scale(1.2)'; setTimeout(()=>yesBtn.style.transform='scale(1)',200);
+// YES grossit légèrement yesBtn.style.transform='scale(1.2)'; setTimeout(()=>yesBtn.style.transform='scale(1)',200);
 
 // Une seule rose tombe createRose(Math.random()*window.innerWidth,2); }); </script>
 
