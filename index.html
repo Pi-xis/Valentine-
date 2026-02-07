@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -121,10 +122,14 @@ button {
     <button class="yes" id="yesBtn">Yes</button>
     <button class="no" id="noBtn">No</button>
   </div>
-</div><div id="thankyou">
+</div>
+
+<div id="thankyou">
   <h1>Thank youuu</h1>
   <p>You just made this moment special.</p>
-</div><script>
+</div>
+
+<script>
 let rosesIntervalActive = false;
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
@@ -183,5 +188,6 @@ noBtn.addEventListener('click', () => {
   const rect = noBtn.getBoundingClientRect();
   createRose(rect.left + rect.width/2);
 });
-</script></body>
+</script>
+</body>
 </html>
