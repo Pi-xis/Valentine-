@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -124,36 +125,79 @@ button {
 <div id="notification">✓ Sent</div>
 <script>
 let yesScale = 1;
-let rosesIntervalActive = false;function createRose(x, duration = 4) { const rose = document.createElement('div'); rose.className = 'rose'; rose.textContent = '🌹'; rose.style.left = x + 'px'; rose.style.top = '-60px'; rose.style.animationDuration = duration + 's'; document.body.appendChild(rose); setTimeout(() => rose.remove(), duration * 1000); }
+let rosesIntervalActive = false;
 
-function handleNo() { const noBtn = document.getElementById('noBtn'); const yesBtn = document.getElementById('yesBtn'); const margin = 40; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+function createRose(x, duration = 4) {
+  const rose = document.createElement('div');
+  rose.className = 'rose';
+  rose.textContent = '🌹';
+  rose.style.left = x + 'px';
+  rose.style.top = '-60px';
+  rose.style.animationDuration = duration + 's';
+  document.body.appendChild(rose);
+  setTimeout(() => rose.remove(), duration * 1000);
+}
 
-noBtn.style.position = 'fixed'; noBtn.style.left = (margin + Math.random() * maxX) + 'px'; noBtn.style.top  = (margin + Math.random() * maxY) + 'px';
+// --- Code original des boutons qui fonctionnaient ---
+document.getElementById('noBtn').addEventListener('click', function() {
+  const noBtn = this;
+  const yesBtn = document.getElementById('yesBtn');
+  const margin = 40;
+  const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+  const maxY = window.innerHeight - noBtn.offsetHeight - margin;
 
-yesScale += 0.5; if (yesScale > 3) yesScale = 3; yesBtn.style.transform = scale(${yesScale});
+  noBtn.style.position = 'fixed';
+  noBtn.style.left = (margin + Math.random() * maxX) + 'px';
+  noBtn.style.top  = (margin + Math.random() * maxY) + 'px';
 
-createRose(Math.random() * window.innerWidth, 4); }
+  yesScale += 0.5;
+  if (yesScale > 3) yesScale = 3;
+  yesBtn.style.transform = `scale(${yesScale})`;
 
-async function handleYes() { const yesBtn = document.getElementById('yesBtn'); const noBtn = document.getElementById('noBtn'); const thankyou = document.getElementById('thankyou'); const notification = document.getElementById('notification');
+  createRose(Math.random() * window.innerWidth, 4);
+});
 
-yesBtn.disabled = true; noBtn.disabled = true;
+document.getElementById('yesBtn').addEventListener('click', async function() {
+  const yesBtn = this;
+  const noBtn = document.getElementById('noBtn');
+  const thankyou = document.getElementById('thankyou');
+  const notification = document.getElementById('notification');
 
-if (navigator.vibrate) navigator.vibrate(40);
+  yesBtn.disabled = true;
+  noBtn.disabled = true;
 
-thankyou.style.display = 'flex'; setTimeout(() => thankyou.classList.add('show'), 10);
+  if (navigator.vibrate) navigator.vibrate(40);
 
-// Disparaître Thank you après 2 secondes (modif uniquement) setTimeout(() => { thankyou.classList.remove('show'); setTimeout(() => thankyou.style.display = 'none', 500); }, 2000);
+  thankyou.style.display = 'flex';
+  setTimeout(() => thankyou.classList.add('show'), 10);
 
-if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 12; i++) { createRose(Math.random() * window.innerWidth, 4); } }, 300); }
+  // Disparaître Thank you après 2 secondes
+  setTimeout(() => {
+    thankyou.classList.remove('show');
+    setTimeout(() => thankyou.style.display = 'none', 500);
+  }, 2000);
 
-try { await fetch('https://formspree.io/f/mykdykgd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: 'YES' }) });
+  if (!rosesIntervalActive) {
+    rosesIntervalActive = true;
+    setInterval(() => {
+      for (let i = 0; i < 12; i++) {
+        createRose(Math.random() * window.innerWidth, 4);
+      }
+    }, 300);
+  }
 
-notification.style.display = 'block';
-setTimeout(() => notification.style.display = 'none', 600);
+  try {
+    await fetch('https://formspree.io/f/mykdykgd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answer: 'YES' })
+    });
 
-} catch (e) { console.error(e); } }
-
-document.getElementById('yesBtn').addEventListener('click', handleYes); document.getElementById('noBtn').addEventListener('click', handleNo); </script>
-
+    notification.style.display = 'block';
+    setTimeout(() => notification.style.display = 'none', 600);
+  } catch (e) { console.error(e); }
+});
+// --- Fin code original ---
+</script>
 </body>
 </html>
