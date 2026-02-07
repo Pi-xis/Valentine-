@@ -5,18 +5,7 @@
   <title>Valentine</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      background: linear-gradient(135deg, #f7b2a6, #ffe5d9);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-    }
+    body { font-family: Arial, sans-serif; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; flex-direction: column; background: linear-gradient(135deg, #f7b2a6, #ffe5d9); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
     @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     .card { width: 320px; padding: 25px; text-align: center; background: rgba(255, 255, 255, 0.95); border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.3); z-index: 10; animation: pulseCard 2s infinite; }
     @keyframes pulseCard { 0%,100%{transform:scale(1);}50%{transform:scale(1.03);} }
@@ -26,7 +15,7 @@
     .buttons { display:flex; justify-content:space-around; margin-top:20px; }
     button { padding:12px 25px; border:none; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.2); transition: transform 0.2s ease; }
     .yes { background:linear-gradient(135deg,#ff4d6d,#ff7b9c); color:white; }
-    .no { background:linear-gradient(135deg,#ccc,#aaa); color:#333; transition: transform 0.25s cubic-bezier(0.4,0,0.2,1); }
+    .no { background:linear-gradient(135deg,#ccc,#aaa); color:#333; transition:left 0.25s ease-out, top 0.25s ease-out; }
     .rose { position:absolute; font-size:30px; pointer-events:none; z-index:25; text-shadow:0 0 10px rgba(255,77,109,0.9); animation:fall linear forwards; }
     @keyframes fall { from{transform:translateY(-50px);opacity:1;} to{transform:translateY(100vh);opacity:0;} }
     #thankyou { position:fixed; inset:0; display:none; opacity:0; background:rgba(255,224,214,0.85); z-index:20; display:flex; justify-content:center; align-items:center; flex-direction:column; transition: opacity 0.8s ease; }
@@ -63,19 +52,20 @@
   setTimeout(()=>rose.remove(),5000);
 }
 
-// NO button: malicieux et reste sur écran
+// --- NO button stable et malicieux ---
 noBtn.onclick = () => {
-  const maxX = window.innerWidth - noBtn.offsetWidth - 40;
-  const maxY = window.innerHeight - noBtn.offsetHeight - 80;
-  const minX = 40;
-  const minY = 80;
+  const margin = 40;
+  const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+  const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+  const minX = margin;
+  const minY = margin;
 
   const x = minX + Math.random()*(maxX - minX);
   const y = minY + Math.random()*(maxY - minY);
 
-  noBtn.style.position='fixed';
-  noBtn.style.transition='transform 0.25s ease-out';
-  noBtn.style.transform=`translate(${x}px, ${y}px)`;
+  noBtn.style.position = 'fixed';
+  noBtn.style.left = x + 'px';
+  noBtn.style.top = y + 'px';
 
   // micro vibration
   if(navigator.vibrate) navigator.vibrate(20);
@@ -83,12 +73,12 @@ noBtn.onclick = () => {
   // YES grossit
   yesScale += 1;
   if(yesScale>3.8) yesScale=3.8;
-  yesBtn.style.transform=`scale(${yesScale})`;
+  yesBtn.style.transform = `scale(${yesScale})`;
 
   createRose();
 };
 
-// YES button: dashboard second
+// --- YES button ---
 yesBtn.onclick = () => {
   thankyou.style.display='flex';
   requestAnimationFrame(()=>thankyou.style.opacity='1');
