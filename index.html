@@ -63,13 +63,13 @@ button {
 #thankyou {
   position:fixed;
   inset:0;
-  background: rgba(255,224,214,0.85); /* semi-transparent pour voir le premier dashboard */
+  background: rgba(255,224,214,0.85);
   display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
   z-index:20;
-  display:none; /* ne s'affiche qu'après YES */
+  display:none; /* n'apparaît qu'après YES */
 }
 #thankyou h1,#thankyou p {
   animation:none!important;
@@ -117,7 +117,7 @@ button {
 let yesScale = 1;
 let rosesIntervalActive = false;function createRose(x,duration=4){ const rose = document.createElement('div'); rose.className='rose'; rose.textContent='🌹'; rose.style.left = x+'px'; rose.style.top = '-60px'; rose.style.animationDuration = duration+'s'; document.body.appendChild(rose); setTimeout(()=>rose.remove(),duration*1000); }
 
-// Bouton NO : reste dans l'écran const noBtn = document.getElementById('noBtn'); noBtn.addEventListener('click', function(){ const yesBtn = document.getElementById('yesBtn'); const margin = 10; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+// Bouton NO : reste dans le cadre et bouge const noBtn = document.getElementById('noBtn'); noBtn.addEventListener('click', function(){ const yesBtn = document.getElementById('yesBtn'); const margin = 10; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
 
 noBtn.style.position='fixed'; noBtn.style.left = Math.random()*maxX + 'px'; noBtn.style.top  = Math.random()*maxY + 'px';
 
@@ -127,7 +127,7 @@ createRose(Math.random()*window.innerWidth,4); });
 
 // Bouton YES : affiche le deuxième dashboard après clic const yesBtn = document.getElementById('yesBtn'); yesBtn.addEventListener('click', async function(){ const noBtn = document.getElementById('noBtn'); const thankyou = document.getElementById('thankyou'); const thankText = thankyou.querySelectorAll('h1,p'); const notification = document.getElementById('notification');
 
-yesBtn.disabled=true; noBtn.disabled=true;
+// Désactiver les boutons mais les garder visibles yesBtn.disabled=true; noBtn.disabled=true;
 
 if(navigator.vibrate) navigator.vibrate(40);
 
