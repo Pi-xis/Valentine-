@@ -15,7 +15,7 @@
     .buttons { display:flex; justify-content:space-around; margin-top:20px; }
     button { padding:12px 25px; border:none; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.2); transition: transform 0.2s ease; }
     .yes { background:linear-gradient(135deg,#ff4d6d,#ff7b9c); color:white; }
-    .no { background:linear-gradient(135deg,#ccc,#aaa); color:#333; transition:left 0.25s ease-out, top 0.25s ease-out; }
+    .no { background:linear-gradient(135deg,#ccc,#aaa); color:#333; }
     .rose { position:absolute; font-size:30px; pointer-events:none; z-index:25; text-shadow:0 0 10px rgba(255,77,109,0.9); animation:fall linear forwards; }
     @keyframes fall { from{transform:translateY(-50px);opacity:1;} to{transform:translateY(100vh);opacity:0;} }
     #thankyou { position:fixed; inset:0; display:none; opacity:0; background:rgba(255,224,214,0.85); z-index:20; display:flex; justify-content:center; align-items:center; flex-direction:column; transition: opacity 0.8s ease; }
@@ -52,7 +52,7 @@
   setTimeout(()=>rose.remove(),5000);
 }
 
-// --- NO button stable et malicieux ---
+// --- Boutons d'origine avec limite pour NO ---
 noBtn.onclick = () => {
   const margin = 40;
   const maxX = window.innerWidth - noBtn.offsetWidth - margin;
@@ -60,6 +60,7 @@ noBtn.onclick = () => {
   const minX = margin;
   const minY = margin;
 
+  // Limiter NO pour qu'il reste à l'écran
   const x = minX + Math.random()*(maxX - minX);
   const y = minY + Math.random()*(maxY - minY);
 
@@ -67,10 +68,8 @@ noBtn.onclick = () => {
   noBtn.style.left = x + 'px';
   noBtn.style.top = y + 'px';
 
-  // micro vibration
-  if(navigator.vibrate) navigator.vibrate(20);
+  if (navigator.vibrate) navigator.vibrate(20);
 
-  // YES grossit
   yesScale += 1;
   if(yesScale>3.8) yesScale=3.8;
   yesBtn.style.transform = `scale(${yesScale})`;
@@ -78,7 +77,6 @@ noBtn.onclick = () => {
   createRose();
 };
 
-// --- YES button ---
 yesBtn.onclick = () => {
   thankyou.style.display='flex';
   requestAnimationFrame(()=>thankyou.style.opacity='1');
