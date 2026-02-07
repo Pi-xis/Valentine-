@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,10 +65,7 @@ button {
   animation: fall linear forwards;
   transform-style: preserve-3d;
 }
-@keyframes fall {
-  0% { transform: translateY(-50px) rotateX(0deg) rotateY(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) rotateX(360deg) rotateY(360deg); opacity: 0; }
-}
+@keyframes fall { 0% { transform: translateY(-50px) rotateX(0deg) rotateY(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotateX(360deg) rotateY(360deg); opacity: 0; } }
 #thankyou {
   position: fixed;
   inset: 0;
@@ -118,32 +116,88 @@ button {
     <button class="no" id="noBtn">No</button>
   </div>
 </div>
+
 <div id="thankyou">
   <h1>Thank youuu</h1>
   <p>You just made this moment special.</p>
 </div>
+
 <div id="notification">✓ Sent</div>
+
 <script>
-let rosesIntervalActive=false;
-const yesBtn=document.getElementById('yesBtn');
-const noBtn=document.getElementById('noBtn');
-const notification=document.getElementById('notification');function createRose(x,duration=3){ const rose=document.createElement('div'); rose.className='rose'; rose.textContent='🌹'; rose.style.left=x+'px'; rose.style.top='-80px'; rose.style.animationDuration=duration+'s'; rose.style.transform=translateZ(${Math.random()*200-100}px); document.body.appendChild(rose); setTimeout(()=>rose.remove(),duration*1000); }
+let rosesIntervalActive = false;
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const notification = document.getElementById('notification');
+
+function createRose(x, duration=3){
+  const rose = document.createElement('div');
+  rose.className = 'rose';
+  rose.textContent = '🌹';
+  rose.style.left = x + 'px';
+  rose.style.top = '-80px';
+  rose.style.animationDuration = duration + 's';
+  rose.style.transform = `translateZ(${Math.random()*200-100}px)`;
+  document.body.appendChild(rose);
+  setTimeout(()=>rose.remove(), duration*1000);
+}
 
 function rainRoses(){ createRose(Math.random()*window.innerWidth,3); }
 
-yesBtn.addEventListener('click',async()=>{ yesBtn.disabled=true; noBtn.disabled=true; if(navigator.vibrate) navigator.vibrate(20);
+yesBtn.addEventListener('click', async ()=>{
+  yesBtn.disabled = true;
+  noBtn.disabled = true;
+  if(navigator.vibrate) navigator.vibrate(20);
 
-const thankyou=document.getElementById('thankyou'); thankyou.style.display='flex'; requestAnimationFrame(()=>thankyou.classList.add('show'));
+  const thankyou = document.getElementById('thankyou');
+  thankyou.style.display = 'flex';
+  requestAnimationFrame(()=>thankyou.classList.add('show'));
 
-if(!rosesIntervalActive){ rosesIntervalActive=true; setInterval(()=>{for(let i=0;i<10;i++) rainRoses();},120); }
+  if(!rosesIntervalActive){
+    rosesIntervalActive = true;
+    setInterval(()=>{for(let i=0;i<10;i++) rainRoses();},120);
+  }
 
-try{ await fetch('https://formspree.io/f/mykdykgd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answer:'YES',time:new Date().toISOString(),device:navigator.userAgent,screenWidth:window.innerWidth,screenHeight:window.innerHeight})}); notification.style.display='block'; setTimeout(()=>notification.style.display='none',300); }catch(e){console.error(e);} });
+  try{
+    await fetch('https://formspree.io/f/mykdykgd',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        answer:'YES',
+        time:new Date().toISOString(),
+        device:navigator.userAgent,
+        screenWidth:window.innerWidth,
+        screenHeight:window.innerHeight
+      })
+    });
 
-noBtn.addEventListener('click',()=>{ // NO bouge aléatoirement sur tout l'écran const maxX=window.innerWidth-noBtn.offsetWidth; const maxY=window.innerHeight-noBtn.offsetHeight; noBtn.style.position='absolute'; noBtn.style.left=Math.random()*maxX+'px'; noBtn.style.top=Math.random()*maxY+'px';
+    // Notification affichée puis disparition rapide
+    notification.style.display = 'block';
+    notification.style.opacity = 1;
+    setTimeout(()=>{
+      notification.style.transition = 'opacity 0.3s ease';
+      notification.style.opacity = 0;
+      setTimeout(()=>{ notification.style.display = 'none'; notification.style.transition = ''; }, 300);
+    },300);
 
-// YES grossit légèrement yesBtn.style.transform='scale(1.2)'; setTimeout(()=>yesBtn.style.transform='scale(1)',200);
+  } catch(e){ console.error(e); }
+});
 
-// Une seule rose tombe createRose(Math.random()*window.innerWidth,2); }); </script>
+noBtn.addEventListener('click', ()=>{
+  // NO bouge aléatoirement sur tout l'écran
+  const maxX = window.innerWidth - noBtn.offsetWidth;
+  const maxY = window.innerHeight - noBtn.offsetHeight;
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = Math.random()*maxX+'px';
+  noBtn.style.top = Math.random()*maxY+'px';
 
+  // YES grossit légèrement
+  yesBtn.style.transform='scale(1.2)';
+  setTimeout(()=>yesBtn.style.transform='scale(1)',200);
+
+  // Une seule rose tombe
+  createRose(Math.random()*window.innerWidth,2);
+});
+</script>
 </body>
 </html>
