@@ -123,8 +123,8 @@ button {
   <img src="https://wallpapercave.com/wp/wp8365768.png" alt="Minions Valentine">
   <h2>Will you be my Valentine?</h2>
   <div class="buttons">
-    <button class="yes" id="yesBtn">Yes</button>
-    <button class="no" id="noBtn">No</button>
+    <button class="yes" id="yesBtn" onclick="handleYes()">Yes</button>
+    <button class="no" id="noBtn" onclick="handleNo()">No</button>
   </div>
 </div>
 <div id="thankyou">
@@ -133,68 +133,38 @@ button {
 </div>
 <div id="notification">✓ Sent</div>
 <script>
-// === ULTRA SAFE SCRIPT (FIX BUTTONS NOT WORKING) ===window.addEventListener('DOMContentLoaded', () => { let rosesIntervalActive = false; let yesScale = 1;
+// === ABSOLUTE FALLBACK SCRIPT (INLINE ONCLICK) ===
+let yesScale = 1;
+let rosesIntervalActive = false;function createRose(x, duration = 4) { const rose = document.createElement('div'); rose.className = 'rose'; rose.textContent = '🌹'; rose.style.left = x + 'px'; rose.style.top = '-60px'; rose.style.animationDuration = duration + 's'; document.body.appendChild(rose); setTimeout(() => rose.remove(), duration * 1000); }
 
-const yesBtn = document.getElementById('yesBtn'); const noBtn  = document.getElementById('noBtn'); const notification = document.getElementById('notification'); const thankyou = document.getElementById('thankyou');
+function handleNo() { const noBtn = document.getElementById('noBtn'); const yesBtn = document.getElementById('yesBtn');
 
-if (!yesBtn || !noBtn) { console.error('Buttons not found'); return; }
+const margin = 40; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
 
-// --- ROSE --- function createRose(x, duration = 4) { const rose = document.createElement('div'); rose.className = 'rose'; rose.textContent = '🌹'; rose.style.left = x + 'px'; rose.style.top = '-60px'; rose.style.animationDuration = duration + 's'; document.body.appendChild(rose); setTimeout(() => rose.remove(), duration * 1000); }
+noBtn.style.position = 'fixed'; noBtn.style.left = (margin + Math.random() * maxX) + 'px'; noBtn.style.top  = (margin + Math.random() * maxY) + 'px';
 
-function rainRoses(amount = 10) { for (let i = 0; i < amount; i++) { createRose(Math.random() * window.innerWidth, 4); } }
+yesScale += 0.5; if (yesScale > 3) yesScale = 3; yesBtn.style.transform = scale(${yesScale});
 
-// --- YES --- yesBtn.onclick = async () => { if (yesBtn.disabled) return;
+createRose(Math.random() * window.innerWidth, 4); }
 
-yesBtn.disabled = true;
-noBtn.disabled = true;
+async function handleYes() { const yesBtn = document.getElementById('yesBtn'); const noBtn = document.getElementById('noBtn'); const thankyou = document.getElementById('thankyou'); const notification = document.getElementById('notification');
+
+yesBtn.disabled = true; noBtn.disabled = true;
 
 if (navigator.vibrate) navigator.vibrate(40);
 
-thankyou.style.display = 'flex';
-requestAnimationFrame(() => thankyou.classList.add('show'));
+thankyou.style.display = 'flex'; setTimeout(() => thankyou.classList.add('show'), 10);
 
-setTimeout(() => {
-  thankyou.classList.remove('show');
-  setTimeout(() => thankyou.style.display = 'none', 700);
-}, 4000);
+setTimeout(() => { thankyou.classList.remove('show'); setTimeout(() => thankyou.style.display = 'none', 700); }, 4000);
 
-if (!rosesIntervalActive) {
-  rosesIntervalActive = true;
-  setInterval(() => rainRoses(12), 250);
-}
+if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 12; i++) { createRose(Math.random() * window.innerWidth, 4); } }, 300); }
 
-try {
-  await fetch('https://formspree.io/f/mykdykgd', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ answer: 'YES' })
-  });
+try { await fetch('https://formspree.io/f/mykdykgd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: 'YES' }) });
 
-  notification.style.display = 'block';
-  notification.style.opacity = '1';
-  setTimeout(() => {
-    notification.style.opacity = '0';
-    setTimeout(() => notification.style.display = 'none', 300);
-  }, 300);
-} catch (e) {
-  console.error(e);
-}
+notification.style.display = 'block';
+setTimeout(() => notification.style.display = 'none', 600);
 
-};
-
-// --- NO --- noBtn.onclick = () => { const margin = 40; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
-
-noBtn.style.position = 'fixed';
-noBtn.style.left = (margin + Math.random() * maxX) + 'px';
-noBtn.style.top  = (margin + Math.random() * maxY) + 'px';
-
-yesScale += 0.5;
-if (yesScale > 2.8) yesScale = 2.8;
-yesBtn.style.transform = `scale(${yesScale})`;
-
-createRose(Math.random() * window.innerWidth, 4);
-
-}; }); </script>
+} catch (e) { console.error(e); } } </script>
 
 </body>
 </html>
