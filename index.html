@@ -5,105 +5,109 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 body {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #f7b2a6, #ffe5d9);
-  background-size: 400% 400%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-  flex-direction: column;
+  font-family:'Arial', sans-serif;
+  background: linear-gradient(135deg,#f7b2a6,#ffe5d9);
+  background-size:400% 400%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+  flex-direction:column;
   animation: gradientShift 15s ease infinite;
-  position: relative;
+  position:relative;
 }
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
 .card {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 25px;
-  border-radius: 25px;
-  text-align: center;
-  width: 320px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-  z-index: 10;
-  animation: pulseCard 2s infinite;
+  background: rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:25px;
+  text-align:center;
+  width:320px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+  z-index:10;
+  animation:pulseCard 2s infinite;
 }
-@keyframes pulseCard { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-img { width: 100%; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+@keyframes pulseCard {0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+img{width:100%; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.2);}
 h2 {
-  margin: 20px 0;
-  font-family: 'Brush Script MT', cursive;
-  font-size: 30px;
-  color: #ff4d6d;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-  animation: pulse 2s infinite;
+  margin:20px 0;
+  font-family:'Brush Script MT', cursive;
+  font-size:30px;
+  color:#ff4d6d;
+  text-shadow:2px 2px 5px rgba(0,0,0,0.3);
+  animation:pulse 2s infinite;
 }
-@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-.buttons { display: flex; justify-content: space-around; margin-top: 20px; position: relative; }
+@keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.buttons { display:flex; justify-content:space-around; margin-top:20px; position:relative;}
 button {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 30px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
-.yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; transition: transform 0.2s ease; position: relative; }
-.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; transition: transform 0.3s ease; position: relative; }
+.yes { background:linear-gradient(135deg,#ff4d6d,#ff7b9c); color:white; transition: transform 0.2s ease; position:relative; }
+.no { background:linear-gradient(135deg,#ccc,#aaa); color:#333; transition: transform 0.3s ease; position:relative; }
+
 .rose {
-  position: absolute;
-  font-size: 30px;
-  pointer-events: none;
-  z-index: 5;
+  position:absolute;
+  font-size:30px;
+  pointer-events:none;
+  z-index:50; /* fleurs toujours au dessus du texte */
   animation: fall linear forwards;
 }
-@keyframes fall { 0% { transform: translateY(-50px); opacity: 1; } 100% { transform: translateY(100vh); opacity: 0; } }
+@keyframes fall { 0%{transform:translateY(-50px); opacity:1;} 100%{transform:translateY(100vh); opacity:0;} }
+
 #thankyou {
-  position: fixed;
-  inset: 0;
+  position:fixed;
+  inset:0;
   background: radial-gradient(circle at top, #ffe0d6, #f7b2a6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 20;
-  opacity: 0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:20;
+  opacity:0;
   transition: opacity 0.7s ease;
 }
-#thankyou.show { display: flex; opacity: 1; }
+#thankyou.show { display:flex; opacity:1; }
 #thankyou h1, #thankyou p {
-  animation: none !important;
-  transform: none !important;
-  transition: none !important;
-  position: static;
-  text-align: center;
-  color: #ff4d6d;
-  text-shadow: 0 0 12px rgba(255,77,109,0.5);
+  animation:none !important;
+  transform:none !important;
+  transition:none !important;
+  position:relative;
+  text-align:center;
+  color:#ff4d6d;
+  text-shadow:0 0 12px rgba(255,77,109,0.5);
+  z-index:10; /* texte derrière les roses */
 }
-#thankyou h1 { font-size: 56px; }
-#thankyou p { font-size: 21px; color: #5a2a2a; }
+#thankyou h1 { font-size:56px; }
+#thankyou p { font-size:21px; color:#5a2a2a; }
+
 #notification {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  position:fixed;
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
   background: rgba(255,255,255,0.9);
-  padding: 10px 20px;
-  border-radius: 20px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  font-size: 16px;
-  color: #333;
-  display: none;
-  z-index: 30;
-  text-align: center;
+  padding:10px 20px;
+  border-radius:20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+  font-size:16px;
+  color:#333;
+  display:none;
+  z-index:30;
+  text-align:center;
 }
 </style>
 </head>
@@ -131,32 +135,32 @@ const noBtn = document.getElementById('noBtn');
 const notification = document.getElementById('notification');
 
 // Crée une rose 🌹
-function createRose(x, duration=5){ // plus lent
-  const rose = document.createElement('div');
-  rose.className = 'rose';
-  rose.textContent = '🌹';
-  rose.style.left = x + 'px';
-  rose.style.top = '-50px';
-  rose.style.animationDuration = duration + 's';
+function createRose(x, duration=6){ // plus lent
+  const rose=document.createElement('div');
+  rose.className='rose';
+  rose.textContent='🌹';
+  rose.style.left=x+'px';
+  rose.style.top='-50px';
+  rose.style.animationDuration=duration+'s';
   document.body.appendChild(rose);
   setTimeout(()=>rose.remove(), duration*1000);
 }
 
 // Pluie de roses
-function rainRoses(){ createRose(Math.random()*window.innerWidth,5); }
+function rainRoses(){ createRose(Math.random()*window.innerWidth,6); }
 
 yesBtn.addEventListener('click', async ()=>{
-  yesBtn.disabled = true;
-  noBtn.disabled = true;
+  yesBtn.disabled=true;
+  noBtn.disabled=true;
 
   if(navigator.vibrate) navigator.vibrate(20);
 
-  const thankyou = document.getElementById('thankyou');
-  thankyou.style.display = 'flex';
+  const thankyou=document.getElementById('thankyou');
+  thankyou.style.display='flex';
   requestAnimationFrame(()=>thankyou.classList.add('show'));
 
   if(!rosesIntervalActive){
-    rosesIntervalActive = true;
+    rosesIntervalActive=true;
     setInterval(()=>{for(let i=0;i<10;i++) rainRoses();},150);
   }
 
@@ -173,34 +177,33 @@ yesBtn.addEventListener('click', async ()=>{
       })
     });
 
-    // Notification email
     notification.style.display='block';
-    notification.style.opacity = 1;
+    notification.style.opacity=1;
     setTimeout(()=>{
       notification.style.transition='opacity 0.3s ease';
       notification.style.opacity=0;
       setTimeout(()=>{notification.style.display='none'; notification.style.transition='';},300);
     },300);
 
-  } catch(e){ console.error(e); }
+  } catch(e){console.error(e);}
 });
 
 // Gestion clic NO
 noBtn.addEventListener('click', ()=>{
-  const maxX = window.innerWidth - noBtn.offsetWidth;
-  const maxY = window.innerHeight - noBtn.offsetHeight;
+  const maxX=window.innerWidth-noBtn.offsetWidth;
+  const maxY=window.innerHeight-noBtn.offsetHeight;
   noBtn.style.position='fixed';
-  noBtn.style.left = Math.random()*maxX + 'px';
-  noBtn.style.top = Math.random()*maxY + 'px';
+  noBtn.style.left=Math.random()*maxX+'px';
+  noBtn.style.top=Math.random()*maxY+'px';
 
-  // YES grossit légèrement
-  const currentScale = yesBtn.style.transform.replace('scale(','').replace(')','') || 1;
-  let newScale = parseFloat(currentScale) + 0.05;
-  if(newScale > 2) newScale = 2; // ne sort pas de l'écran
-  yesBtn.style.transform = `scale(${newScale})`;
+  // YES grossit plus à chaque clic
+  const currentScale=parseFloat(yesBtn.style.transform.replace('scale(','').replace(')',''))||1;
+  let newScale=currentScale+0.1; // grossissement plus important
+  if(newScale>2) newScale=2; // ne sort pas de l'écran
+  yesBtn.style.transform=`scale(${newScale})`;
 
   // Une seule rose tombe
-  createRose(Math.random()*window.innerWidth,5);
+  createRose(Math.random()*window.innerWidth,6);
 });
 </script>
 </body>
