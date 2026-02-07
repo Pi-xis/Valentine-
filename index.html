@@ -1,76 +1,70 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine Final</title>
+<title>Valentine</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #f7b2a6, #ffe5d9);
   background-size: 400% 400%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-  flex-direction: column;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+  flex-direction:column;
   animation: gradientShift 15s ease infinite;
 }
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+@keyframes gradientShift {0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .card {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 25px;
-  border-radius: 25px;
-  text-align: center;
-  width: 320px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-  z-index: 10;
+  background: rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:25px;
+  text-align:center;
+  width:320px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.3);
+  z-index:10;
   animation: pulseCard 2s infinite;
 }
-@keyframes pulseCard { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-img { width: 100%; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+@keyframes pulseCard{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+img { width:100%; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.2);}
 h2 {
-  margin: 20px 0;
+  margin:20px 0;
   font-family: 'Brush Script MT', cursive;
-  font-size: 30px;
-  color: #ff4d6d;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  font-size:30px;
+  color:#ff4d6d;
+  text-shadow:2px 2px 5px rgba(0,0,0,0.3);
   animation: pulse 2s infinite;
 }
-@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-.buttons { display: flex; justify-content: space-around; margin-top: 20px; }
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.buttons { display:flex; justify-content:space-around; margin-top:20px; }
 button {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 30px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:all 0.3s ease;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
-.yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; transition: transform 0.2s ease; }
-.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; transition: transform 0.3s ease; }
+.yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color:white; transition: transform 0.2s ease;}
+.no { background: linear-gradient(135deg, #ccc, #aaa); color:#333; transition: transform 0.3s ease;}
 .rose {
-  position: absolute;
-  font-size: 30px;
-  pointer-events: none;
-  z-index: 15;
-  animation: fall linear forwards;
+  position:absolute;
+  font-size:30px;
+  pointer-events:none;
+  z-index:15;
+  animation:fall linear forwards;
 }
-@keyframes fall {
-  0% { transform: translateY(-50px); opacity: 1; }
-  100% { transform: translateY(100vh); opacity: 0; }
-}
+@keyframes fall{0%{transform:translateY(-50px); opacity:1;}100%{transform:translateY(100vh); opacity:0;}}
 #thankyou {
   position:fixed;
   inset:0;
-  background: radial-gradient(circle at top, #ffe0d6, #f7b2a6);
+  background: radial-gradient(circle at top,#ffe0d6,#f7b2a6);
   display:none;
   justify-content:center;
   align-items:center;
@@ -80,31 +74,31 @@ button {
   transition: opacity 0.5s ease;
 }
 #thankyou.show { display:flex; opacity:1; }
-#thankyou h1, #thankyou p {
-  animation: none !important;
-  transform: none !important;
-  transition: none !important;
-  position: static;
-  text-align: center;
-  color: #ff4d6d;
-  text-shadow: 0 0 12px rgba(255,77,109,0.5);
+#thankyou h1,#thankyou p {
+  animation:none!important;
+  transform:none!important;
+  transition:none!important;
+  position:static;
+  text-align:center;
+  color:#ff4d6d;
+  text-shadow:0 0 12px rgba(255,77,109,0.5);
 }
-#thankyou h1 { font-size: 56px; }
-#thankyou p { font-size: 21px; color: #5a2a2a; }
+#thankyou h1{font-size:56px;}
+#thankyou p{font-size:21px;color:#5a2a2a;}
 #notification {
   position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255,255,255,0.9);
-  padding: 10px 20px;
-  border-radius: 20px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  font-size: 16px;
-  color: #333;
-  display: none;
-  z-index: 30;
-  text-align: center;
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(255,255,255,0.9);
+  padding:10px 20px;
+  border-radius:20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+  font-size:16px;
+  color:#333;
+  display:none;
+  z-index:30;
+  text-align:center;
 }
 </style>
 </head>
@@ -124,34 +118,78 @@ button {
 <div id="notification">✓ Sent</div>
 <script>
 let yesScale = 1;
-let rosesIntervalActive = false;function createRose(x, duration = 4) { const rose = document.createElement('div'); rose.className = 'rose'; rose.textContent = '🌹'; rose.style.left = x + 'px'; rose.style.top = '-60px'; rose.style.animationDuration = duration + 's'; document.body.appendChild(rose); setTimeout(() => rose.remove(), duration * 1000); }
+let rosesIntervalActive = false;
 
-// NO bouton: reste dans l'écran et YES grossit plus vite document.getElementById('noBtn').addEventListener('click', function() { const noBtn = this; const yesBtn = document.getElementById('yesBtn'); const margin = 10; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+function createRose(x,duration=4){
+  const rose = document.createElement('div');
+  rose.className='rose';
+  rose.textContent='🌹';
+  rose.style.left = x+'px';
+  rose.style.top = '-60px';
+  rose.style.animationDuration = duration+'s';
+  document.body.appendChild(rose);
+  setTimeout(()=>rose.remove(),duration*1000);
+}
 
-noBtn.style.position = 'fixed'; noBtn.style.left = Math.random() * maxX + 'px'; noBtn.style.top  = Math.random() * maxY + 'px';
+// --- Boutons originaux réintégrés ---
+document.getElementById('noBtn').addEventListener('click', function(){
+  const noBtn = this;
+  const yesBtn = document.getElementById('yesBtn');
+  const margin = 10;
+  const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+  const maxY = window.innerHeight - noBtn.offsetHeight - margin;
 
-yesScale += 0.7; if (yesScale > 3) yesScale = 3; yesBtn.style.transform = scale(${yesScale});
+  noBtn.style.position = 'fixed';
+  noBtn.style.left = Math.random()*maxX+'px';
+  noBtn.style.top  = Math.random()*maxY+'px';
 
-createRose(Math.random() * window.innerWidth, 4); });
+  yesScale += 0.7;
+  if(yesScale>3) yesScale=3;
+  yesBtn.style.transform = `scale(${yesScale})`;
 
-// YES bouton: dashboard Thank you disparaît après 2s, roses tombent document.getElementById('yesBtn').addEventListener('click', async function() { const yesBtn = this; const noBtn = document.getElementById('noBtn'); const thankyou = document.getElementById('thankyou'); const notification = document.getElementById('notification');
+  createRose(Math.random()*window.innerWidth,4);
+});
 
-yesBtn.disabled = true; noBtn.disabled = true;
+document.getElementById('yesBtn').addEventListener('click', async function(){
+  const yesBtn = this;
+  const noBtn = document.getElementById('noBtn');
+  const thankyou = document.getElementById('thankyou');
+  const notification = document.getElementById('notification');
 
-if (navigator.vibrate) navigator.vibrate(40);
+  yesBtn.disabled=true;
+  noBtn.disabled=true;
 
-thankyou.style.display = 'flex'; setTimeout(() => thankyou.classList.add('show'), 10);
+  if(navigator.vibrate) navigator.vibrate(40);
 
-setTimeout(() => { thankyou.classList.remove('show'); setTimeout(() => thankyou.style.display = 'none', 500); }, 2000);
+  thankyou.style.display='flex';
+  setTimeout(()=>thankyou.classList.add('show'),10);
 
-if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 12; i++) { createRose(Math.random() * window.innerWidth, 4); } }, 300); }
+  setTimeout(()=>{
+    thankyou.classList.remove('show');
+    setTimeout(()=>thankyou.style.display='none',500);
+  },2000);
 
-try { await fetch('https://formspree.io/f/mykdykgd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: 'YES' }) });
+  if(!rosesIntervalActive){
+    rosesIntervalActive=true;
+    setInterval(()=>{
+      for(let i=0;i<12;i++){
+        createRose(Math.random()*window.innerWidth,4);
+      }
+    },300);
+  }
 
-notification.style.display = 'block';
-setTimeout(() => notification.style.display = 'none', 600);
+  try{
+    await fetch('https://formspree.io/f/mykdykgd',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ answer:'YES' })
+    });
 
-} catch (e) { console.error(e); } }); </script>
-
+    notification.style.display='block';
+    setTimeout(()=>notification.style.display='none',600);
+  }catch(e){console.error(e);}
+});
+// --- Fin boutons originaux ---
+</script>
 </body>
 </html>
