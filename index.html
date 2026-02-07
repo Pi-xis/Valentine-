@@ -64,9 +64,8 @@ button {
   pointer-events: none;
   z-index: 5;
   animation: fall linear forwards;
-  transform-style: preserve-3d;
 }
-@keyframes fall { 0% { transform: translateY(-50px) rotateX(0deg) rotateY(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotateX(360deg) rotateY(360deg); opacity: 0; } }
+@keyframes fall { 0% { transform: translateY(-50px); opacity: 1; } 100% { transform: translateY(100vh); opacity: 0; } }
 #thankyou {
   position: fixed;
   inset: 0;
@@ -132,22 +131,20 @@ const noBtn = document.getElementById('noBtn');
 const notification = document.getElementById('notification');
 
 // Crée une rose 🌹
-function createRose(x, duration=3){
+function createRose(x, duration=5){ // plus lent
   const rose = document.createElement('div');
   rose.className = 'rose';
   rose.textContent = '🌹';
   rose.style.left = x + 'px';
-  rose.style.top = '-80px';
+  rose.style.top = '-50px';
   rose.style.animationDuration = duration + 's';
-  rose.style.transform = `translateZ(${Math.random()*200-100}px)`;
   document.body.appendChild(rose);
   setTimeout(()=>rose.remove(), duration*1000);
 }
 
 // Pluie de roses
-function rainRoses(){ createRose(Math.random()*window.innerWidth,3); }
+function rainRoses(){ createRose(Math.random()*window.innerWidth,5); }
 
-// Gestion clic YES
 yesBtn.addEventListener('click', async ()=>{
   yesBtn.disabled = true;
   noBtn.disabled = true;
@@ -160,7 +157,7 @@ yesBtn.addEventListener('click', async ()=>{
 
   if(!rosesIntervalActive){
     rosesIntervalActive = true;
-    setInterval(()=>{for(let i=0;i<10;i++) rainRoses();},120);
+    setInterval(()=>{for(let i=0;i<10;i++) rainRoses();},150);
   }
 
   try{
@@ -192,16 +189,18 @@ yesBtn.addEventListener('click', async ()=>{
 noBtn.addEventListener('click', ()=>{
   const maxX = window.innerWidth - noBtn.offsetWidth;
   const maxY = window.innerHeight - noBtn.offsetHeight;
-  noBtn.style.position='fixed'; // FIXÉ pour rester visible
+  noBtn.style.position='fixed';
   noBtn.style.left = Math.random()*maxX + 'px';
   noBtn.style.top = Math.random()*maxY + 'px';
 
   // YES grossit légèrement
-  yesBtn.style.transform='scale(1.2)';
-  setTimeout(()=>yesBtn.style.transform='scale(1)',200);
+  const currentScale = yesBtn.style.transform.replace('scale(','').replace(')','') || 1;
+  let newScale = parseFloat(currentScale) + 0.05;
+  if(newScale > 2) newScale = 2; // ne sort pas de l'écran
+  yesBtn.style.transform = `scale(${newScale})`;
 
   // Une seule rose tombe
-  createRose(Math.random()*window.innerWidth,2);
+  createRose(Math.random()*window.innerWidth,5);
 });
 </script>
 </body>
