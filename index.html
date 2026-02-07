@@ -32,15 +32,15 @@ button { padding:12px 25px; border:none; border-radius:30px; font-size:18px; fon
 
 .no { background:linear-gradient(135deg,#ccc,#aaa); color:#333; }
 
-.rose { position:absolute; font-size:30px; pointer-events:none; z-index:5; text-shadow:0 0 15px rgba(255,77,109,0.9),0 0 25px rgba(255,77,109,0.6); }
+.rose { position:absolute; font-size:30px; pointer-events:none; z-index:25; text-shadow:0 0 15px rgba(255,77,109,0.9),0 0 25px rgba(255,77,109,0.6); }
 
-.confetti { position:absolute; width:10px; height:10px; background:linear-gradient(45deg, #ff4d6d, #ffb3c1); z-index:5; pointer-events:none; border-radius:50%; }
+.confetti { position:absolute; width:10px; height:10px; background:linear-gradient(45deg,#ff4d6d,#ffb3c1); z-index:50; pointer-events:none; border-radius:50%; }
 
-#thankyou { position:fixed; inset:0; display:none; opacity:0; background:rgba(255,224,214,0.85); z-index:20; display:flex; justify-content:center; align-items:center; flex-direction:column; transition: opacity 0.8s ease; pointer-events:none; }
+#thankyou { position:fixed; inset:0; display:none; opacity:0; background:rgba(255,224,214,0.85); z-index:30; display:flex; justify-content:center; align-items:center; flex-direction:column; transition: opacity 0.8s ease; pointer-events:none; }
 #thankyou h1 { font-size:56px; color:#ff4d6d; text-shadow:0 0 20px rgba(255,77,109,0.8); }
 #thankyou p { font-size:21px; color:#5a2a2a; margin-top:10px; }
 
-#notification { position:fixed; top:10px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.9); padding:10px 20px; border-radius:20px; font-size:16px; display:none; z-index:30; box-shadow:0 4px 15px rgba(0,0,0,0.2); }
+#notification { position:fixed; top:10px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.9); padding:10px 20px; border-radius:20px; font-size:16px; display:none; z-index:50; box-shadow:0 4px 15px rgba(0,0,0,0.2); }
 </style>
 </head>
 <body>
@@ -72,46 +72,52 @@ document.addEventListener('DOMContentLoaded', () => {
   let confettiInterval = null;
 
   function createRose() {
-    const rose = document.createElement('div');
-    rose.className = 'rose';
-    rose.textContent = '🌹';
-    rose.style.left = Math.random()*(window.innerWidth-30)+'px';
-    rose.style.top = '-50px';
-    document.body.appendChild(rose);
-    const duration = 4000 + Math.random()*3000;
-    rose.animate([{transform:'translateY(0)'},{transform:`translateY(${window.innerHeight}px)`}], {duration:duration, iterations:1, easing:'linear'});
-    setTimeout(()=>rose.remove(), duration);
+    for(let i=0;i<3;i++){ // 3 roses à la fois pour effet désordonné
+      const rose = document.createElement('div');
+      rose.className='rose';
+      rose.textContent='🌹';
+      rose.style.left=Math.random()*(window.innerWidth-30)+'px';
+      rose.style.top='-50px';
+      document.body.appendChild(rose);
+      const duration=4000+Math.random()*3000;
+      rose.animate([{transform:'translateY(0)'},{transform:`translateY(${window.innerHeight}px)`}],
+                   {duration:duration, iterations:1, easing:'linear'});
+      setTimeout(()=>rose.remove(),duration);
+    }
   }
 
   function createConfetti() {
-    const conf = document.createElement('div');
-    conf.className='confetti';
-    conf.style.left = Math.random()*(window.innerWidth-10)+'px';
-    conf.style.top = '-10px';
-    document.body.appendChild(conf);
-    const duration = 3000 + Math.random()*2000;
-    conf.animate([{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(${window.innerHeight}px) rotate(${Math.random()*360}deg)`}], {duration:duration, iterations:1, easing:'linear'});
-    setTimeout(()=>conf.remove(), duration);
+    for(let i=0;i<5;i++){ // 5 confettis à la fois
+      const conf=document.createElement('div');
+      conf.className='confetti';
+      conf.style.left=Math.random()*(window.innerWidth-10)+'px';
+      conf.style.top='-10px';
+      document.body.appendChild(conf);
+      const duration=3000+Math.random()*2000;
+      conf.animate([{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(${window.innerHeight}px) rotate(${Math.random()*360}deg)`}],
+                   {duration:duration, iterations:1, easing:'linear'});
+      setTimeout(()=>conf.remove(),duration);
+    }
   }
 
   // NO bouton
   noBtn.addEventListener('click', () => {
-    const margin = 10;
-    const maxX = window.innerWidth - noBtn.offsetWidth - margin;
-    const maxY = window.innerHeight - noBtn.offsetHeight - margin;
-    const x = margin + Math.random()*(maxX-margin);
-    const y = margin + Math.random()*(maxY-margin);
+    const margin=10;
+    const maxX=window.innerWidth-noBtn.offsetWidth-margin;
+    const maxY=window.innerHeight-noBtn.offsetHeight-margin;
+    const x=margin+Math.random()*(maxX-margin);
+    const y=margin+Math.random()*(maxY-margin);
 
     noBtn.style.position='fixed';
-    noBtn.style.transition='left 0.3s ease-in-out, top 0.3s ease-in-out';
-    noBtn.style.left = x+'px';
-    noBtn.style.top = y+'px';
+    noBtn.style.transition='left 0.4s ease-in-out, top 0.4s ease-in-out';
+    noBtn.style.left=x+'px';
+    noBtn.style.top=y+'px';
 
     if(navigator.vibrate) navigator.vibrate(15);
 
-    yesScale += 0.5;
+    yesScale+=0.5;
     if(yesScale>4) yesScale=4;
-    yesBtn.style.transform = `scale(${yesScale}) rotate(${Math.random()*10-5}deg)`;
+    yesBtn.style.transform=`scale(${yesScale}) rotate(${Math.random()*10-5}deg)`;
 
     createRose();
   });
@@ -126,10 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
     notification.style.display='block';
     setTimeout(()=>{notification.style.display='none';},2000);
 
-    // Email via Formspree
-    fetch('https://formspree.io/f/mykdykgd', {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json' },
+    fetch('https://formspree.io/f/mykdykgd',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify({email:'ppittjerry@gmail.com', message:'Yes clicked on Valentine site'})
     }).catch(()=>alert('Email failed to send'));
 
@@ -138,10 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
       thankyou.querySelector('p').style.display='none';
     },2000);
 
-    // Pluie de roses continue
-    if(!rosesInterval) rosesInterval = setInterval(createRose, 300);
-    // Confetti après YES
-    if(!confettiInterval) confettiInterval = setInterval(createConfetti, 500);
+    if(!rosesInterval) rosesInterval=setInterval(createRose,300);
+    if(!confettiInterval) confettiInterval=setInterval(createConfetti,500);
   });
 });
 </script>
