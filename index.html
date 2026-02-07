@@ -43,12 +43,18 @@ button { padding:12px 25px; border:none; border-radius:30px; font-size:18px; fon
 </style>
 </head>
 <body>
+
+<form id="emailForm" action="https://formspree.io/f/mykdykgd" method="POST" style="display:none;">
+  <input type="email" name="email" value="user@example.com">
+  <input type="text" name="message" value="Yes clicked on Valentine site">
+</form>
+
 <div class="card" id="firstDashboard">
   <img src="https://wallpapercave.com/wp/wp8365768.png" alt="Valentine">
   <h2>Will you be my Valentine?</h2>
   <div class="buttons">
-    <button class="yes" id="yesBtn">Yes</button>
-    <button class="no" id="noBtn">No</button>
+    <button type="button" class="yes" id="yesBtn">Yes</button>
+    <button type="button" class="no" id="noBtn">No</button>
   </div>
 </div>
 
@@ -65,18 +71,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const noBtn = document.getElementById('noBtn');
   const thankyou = document.getElementById('thankyou');
   const notification = document.getElementById('notification');
+  const emailForm = document.getElementById('emailForm');
   let yesScale = 1;
 
   function createRose(multitude=false){
-    const count = multitude ? 30 : 1; // beaucoup de roses après YES
+    const count = multitude ? 30 : 1;
     for(let i=0;i<count;i++){
       const rose = document.createElement('div');
       rose.className='rose';
       rose.textContent='🌹';
       rose.style.left = Math.random()*window.innerWidth+'px';
+      rose.style.top = '-50px'; // commence en haut
       rose.style.animationDuration = '5s';
       rose.style.textShadow='0 0 15px rgba(255,77,109,0.9),0 0 25px rgba(255,77,109,0.6)';
-      // Halo pulsant pour roses
       rose.style.filter='drop-shadow(0 0 10px rgba(255,77,109,0.8))';
       document.body.appendChild(rose);
       setTimeout(()=>rose.remove(),5000);
@@ -98,24 +105,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(navigator.vibrate) navigator.vibrate(15);
 
-    yesScale += 0.8; // grossissement plus rapide
+    yesScale += 0.8;
     if(yesScale>4) yesScale=4;
     yesBtn.style.transform = `scale(${yesScale})`;
 
     createRose(false);
   });
 
-  // YES bouton: dashboard + pluie de roses + notification + vibration
+  // YES bouton: dashboard + pluie de roses + notification + vibration + email
   yesBtn.addEventListener('click', () => {
     thankyou.style.display='flex';
     requestAnimationFrame(()=>thankyou.style.opacity='1');
 
-    createRose(true); // grande quantité de roses
+    createRose(true); // pluie de roses sur les deux dashboards
     if(navigator.vibrate) navigator.vibrate([30,40,30]);
 
     // Notification
     notification.style.display='block';
     setTimeout(()=>{notification.style.display='none';},2000);
+
+    // Envoi email via Formspree
+    emailForm.submit();
 
     // Disparition du texte "Thank you" après 2s
     setTimeout(()=>{
