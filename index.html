@@ -17,6 +17,7 @@ body {
   overflow: hidden;
   flex-direction: column;
   animation: gradientShift 15s ease infinite;
+  position: relative;
 }
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
@@ -44,7 +45,7 @@ h2 {
   animation: pulse 2s infinite;
 }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-.buttons { display: flex; justify-content: space-around; margin-top: 20px; }
+.buttons { display: flex; justify-content: space-around; margin-top: 20px; position: relative; }
 button {
   padding: 12px 25px;
   border: none;
@@ -55,8 +56,8 @@ button {
   transition: all 0.3s ease;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
-.yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; transition: transform 0.2s ease; }
-.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; transition: transform 0.3s ease; }
+.yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; transition: transform 0.2s ease; position: relative; }
+.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; transition: transform 0.3s ease; position: relative; }
 .rose {
   position: absolute;
   font-size: 30px;
@@ -130,6 +131,7 @@ const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const notification = document.getElementById('notification');
 
+// Crée une rose 🌹
 function createRose(x, duration=3){
   const rose = document.createElement('div');
   rose.className = 'rose';
@@ -142,11 +144,14 @@ function createRose(x, duration=3){
   setTimeout(()=>rose.remove(), duration*1000);
 }
 
+// Pluie de roses
 function rainRoses(){ createRose(Math.random()*window.innerWidth,3); }
 
+// Gestion clic YES
 yesBtn.addEventListener('click', async ()=>{
   yesBtn.disabled = true;
   noBtn.disabled = true;
+
   if(navigator.vibrate) navigator.vibrate(20);
 
   const thankyou = document.getElementById('thankyou');
@@ -171,25 +176,25 @@ yesBtn.addEventListener('click', async ()=>{
       })
     });
 
-    // Notification affichée puis disparition rapide
-    notification.style.display = 'block';
+    // Notification email
+    notification.style.display='block';
     notification.style.opacity = 1;
     setTimeout(()=>{
-      notification.style.transition = 'opacity 0.3s ease';
-      notification.style.opacity = 0;
-      setTimeout(()=>{ notification.style.display = 'none'; notification.style.transition = ''; }, 300);
+      notification.style.transition='opacity 0.3s ease';
+      notification.style.opacity=0;
+      setTimeout(()=>{notification.style.display='none'; notification.style.transition='';},300);
     },300);
 
   } catch(e){ console.error(e); }
 });
 
+// Gestion clic NO
 noBtn.addEventListener('click', ()=>{
-  // NO bouge aléatoirement sur tout l'écran
   const maxX = window.innerWidth - noBtn.offsetWidth;
   const maxY = window.innerHeight - noBtn.offsetHeight;
-  noBtn.style.position = 'absolute';
-  noBtn.style.left = Math.random()*maxX+'px';
-  noBtn.style.top = Math.random()*maxY+'px';
+  noBtn.style.position='fixed'; // FIXÉ pour rester visible
+  noBtn.style.left = Math.random()*maxX + 'px';
+  noBtn.style.top = Math.random()*maxY + 'px';
 
   // YES grossit légèrement
   yesBtn.style.transform='scale(1.2)';
