@@ -1,230 +1,203 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Valentine</title>  <!-- =====================
-       STYLES (MOBILE FIRST)
-       ===================== -->  <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Final</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #f7b2a6, #ffe5d9);
+  background-size: 400% 400%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
+  animation: gradientShift 15s ease infinite;
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px;
+  border-radius: 25px;
+  text-align: center;
+  width: 320px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  z-index: 10;
+  animation: pulseCard 2s infinite;
+}
+@keyframes pulseCard { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+img { width: 100%; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+h2 {
+  margin: 20px 0;
+  font-family: 'Brush Script MT', cursive;
+  font-size: 30px;
+  color: #ff4d6d;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+.buttons { display: flex; justify-content: space-around; margin-top: 20px; }
+button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; transition: transform 0.2s ease; }
+.no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; transition: transform 0.3s ease; }
+.rose {
+  position: absolute;
+  font-size: 30px;
+  pointer-events: none;
+  z-index: 15;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  0% { transform: translateY(-50px); opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+#thankyou {
+  position:fixed;
+  inset:0;
+  background: radial-gradient(circle at top, #ffe0d6, #f7b2a6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:20;
+  opacity:0;
+  transition: opacity 0.5s ease;
+}
+#thankyou.show { display:flex; opacity:1; }
+#thankyou h1, #thankyou p {
+  animation: none !important;
+  transform: none !important;
+  transition: none !important;
+  position: static;
+  text-align: center;
+  color: #ff4d6d;
+  text-shadow: 0 0 12px rgba(255,77,109,0.5);
+}
+#thankyou h1 { font-size: 56px; }
+#thankyou p { font-size: 21px; color: #5a2a2a; }
+#notification {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.9);
+  padding: 10px 20px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  font-size: 16px;
+  color: #333;
+  display: none;
+  z-index: 30;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <img src="https://wallpapercave.com/wp/wp8365768.png" alt="Minions Valentine">
+  <h2>Will you be my Valentine?</h2>
+  <div class="buttons">
+    <button class="yes" id="yesBtn">Yes</button>
+    <button class="no" id="noBtn">No</button>
+  </div>
+</div>
+<div id="thankyou">
+  <h1>Thank youuu</h1>
+  <p>You just made this moment special.</p>
+</div>
+<div id="notification">✓ Sent</div>
+<script>
+let yesScale = 1;
+let rosesIntervalActive = false;
 
-    /* Page background */
-    body {
-      font-family: Arial, sans-serif;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      background: linear-gradient(135deg, #f7b2a6, #ffe5d9);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-    }
+function createRose(x, duration = 4) {
+  const rose = document.createElement('div');
+  rose.className = 'rose';
+  rose.textContent = '🌹';
+  rose.style.left = x + 'px';
+  rose.style.top = '-60px';
+  rose.style.animationDuration = duration + 's';
+  document.body.appendChild(rose);
+  setTimeout(() => rose.remove(), duration * 1000);
+}
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+// --- Code original des boutons qui fonctionnaient ---
+document.getElementById('noBtn').addEventListener('click', function() {
+  const noBtn = this;
+  const yesBtn = document.getElementById('yesBtn');
+  const margin = 40;
+  const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+  const maxY = window.innerHeight - noBtn.offsetHeight - margin;
 
-    /* =====================
-       FIRST DASHBOARD (CARD)
-       ===================== */
-    .card {
-      width: 320px;
-      padding: 25px;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 25px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-      z-index: 10;
-      animation: pulseCard 2s infinite;
-    }
+  noBtn.style.position = 'fixed';
+  noBtn.style.left = (margin + Math.random() * maxX) + 'px';
+  noBtn.style.top  = (margin + Math.random() * maxY) + 'px';
 
-    @keyframes pulseCard {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-    }
+  yesScale += 0.5;
+  if (yesScale > 3) yesScale = 3;
+  yesBtn.style.transform = `scale(${yesScale})`;
 
-    .card img {
-      width: 100%;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
+  createRose(Math.random() * window.innerWidth, 4);
+});
 
-    h2 {
-      margin: 20px 0;
-      font-family: 'Brush Script MT', cursive;
-      font-size: 30px;
-      color: #ff4d6d;
-      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      animation: pulseText 2s infinite;
-    }
+document.getElementById('yesBtn').addEventListener('click', async function() {
+  const yesBtn = this;
+  const noBtn = document.getElementById('noBtn');
+  const thankyou = document.getElementById('thankyou');
+  const notification = document.getElementById('notification');
 
-    @keyframes pulseText {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
+  yesBtn.disabled = true;
+  noBtn.disabled = true;
 
-    /* Buttons container */
-    .buttons {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
-    }
+  if (navigator.vibrate) navigator.vibrate(40);
 
-    button {
-      padding: 12px 25px;
-      border: none;
-      border-radius: 30px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s ease;
-    }
+  thankyou.style.display = 'flex';
+  setTimeout(() => thankyou.classList.add('show'), 10);
 
-    /* YES button */
-    .yes {
-      background: linear-gradient(135deg, #ff4d6d, #ff7b9c);
-      color: white;
-    }
+  // Disparaître Thank you après 2 secondes
+  setTimeout(() => {
+    thankyou.classList.remove('show');
+    setTimeout(() => thankyou.style.display = 'none', 500);
+  }, 2000);
 
-    /* NO button */
-    .no {
-      background: linear-gradient(135deg, #ccc, #aaa);
-      color: #333;
-    }
+  if (!rosesIntervalActive) {
+    rosesIntervalActive = true;
+    setInterval(() => {
+      for (let i = 0; i < 12; i++) {
+        createRose(Math.random() * window.innerWidth, 4);
+      }
+    }, 300);
+  }
 
-    /* =====================
-       ROSES (FALLING EFFECT)
-       ===================== */
-    .rose {
-      position: absolute;
-      font-size: 30px;
-      pointer-events: none;
-      z-index: 25;
-      text-shadow: 0 0 10px rgba(255, 77, 109, 0.9); /* halo */
-      animation: fall linear forwards;
-    }
+  try {
+    await fetch('https://formspree.io/f/mykdykgd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answer: 'YES' })
+    });
 
-    @keyframes fall {
-      from { transform: translateY(-50px); opacity: 1; }
-      to { transform: translateY(100vh); opacity: 0; }
-    }
-
-    /* =====================
-       SECOND DASHBOARD
-       ===================== */
-    #thankyou {
-      position: fixed;
-      inset: 0;
-      display: none; /* appears ONLY after YES */
-      opacity: 0;
-      background: rgba(255, 224, 214, 0.85);
-      z-index: 20;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      transition: opacity 0.8s ease;
-    }
-
-    #thankyou h1 {
-      font-size: 56px;
-      color: #ff4d6d;
-      text-shadow: 0 0 12px rgba(255, 77, 109, 0.5);
-    }
-
-    #thankyou p {
-      font-size: 21px;
-      color: #5a2a2a;
-      margin-top: 10px;
-    }
-
-    /* Notification */
-    #notification {
-      position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.9);
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 16px;
-      display: none;
-      z-index: 30;
-    }
-  </style></head>
-<body>  <!-- FIRST DASHBOARD -->  <div class="card" id="firstDashboard">
-    <img src="https://wallpapercave.com/wp/wp8365768.png" alt="Valentine" />
-    <h2>Will you be my Valentine?</h2>
-    <div class="buttons">
-      <button class="yes" id="yesBtn">Yes</button>
-      <button class="no" id="noBtn">No</button>
-    </div>
-  </div>  <!-- SECOND DASHBOARD -->  <div id="thankyou">
-    <h1>Thank youuu</h1>
-    <p>You just made this moment special.</p>
-  </div>  <!-- EMAIL NOTIFICATION -->  <div id="notification">✓ Sent</div>  <!-- =====================
-       SCRIPT (STABLE LOGIC)
-       ===================== -->  <script>
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const thankyou = document.getElementById('thankyou');
-
-    let yesScale = 1;
-
-    // Create one rose with halo
-    function createRose() {
-      const rose = document.createElement('div');
-      rose.className = 'rose';
-      rose.textContent = '🌹';
-      rose.style.left = Math.random() * window.innerWidth + 'px';
-      rose.style.animationDuration = '5s';
-      document.body.appendChild(rose);
-      setTimeout(() => rose.remove(), 5000);
-    }
-
-    // NO button: moves but NEVER leaves the screen
-    noBtn.onclick = () => {
-      const margin = 80; // larger margin so NO never goes too far on mobile
-      const maxX = window.innerWidth - noBtn.offsetWidth - margin;
-      const maxY = window.innerHeight - noBtn.offsetHeight - margin;
-
-      noBtn.style.position = 'fixed';
-      noBtn.style.left = Math.min(Math.max(margin, Math.random() * maxX), maxX) + 'px';
-      noBtn.style.top = Math.min(Math.max(margin, Math.random() * maxY), maxY) + 'px';
-
-      // YES grows
-      yesScale += 0.8;
-      if (yesScale > 3.5) yesScale = 3.5;
-      yesBtn.style.transform = `scale(${yesScale})`;
-
-      createRose();
-    };
-
-    // YES button: show second dashboard
-    yesBtn.onclick = () => {
-      thankyou.style.display = 'flex';
-      requestAnimationFrame(() => (thankyou.style.opacity = '1'));
-
-      // Many roses
-      for (let i = 0; i < 20; i++) createRose();
-
-      // Mobile vibration
-      if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
-
-      // Text disappears after 2s, dashboard stays
-      setTimeout(() => {
-        thankyou.querySelector('h1').style.display = 'none';
-        thankyou.querySelector('p').style.display = 'none';
-      }, 2000);
-    };
-  </script></body>
+    notification.style.display = 'block';
+    setTimeout(() => notification.style.display = 'none', 600);
+  } catch (e) { console.error(e); }
+});
+// --- Fin code original ---
+</script>
+</body>
 </html>
