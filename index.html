@@ -52,16 +52,16 @@
   setTimeout(()=>rose.remove(),5000);
 }
 
-// --- Boutons d'origine avec NO limité au cadre ---
-noBtn.onclick = () => {
-  const margin = 20; // marges réduites pour rester dans l'écran
+// NO bouton avec addEventListener et limite écran
+noBtn.addEventListener('click', () => {
+  const margin = 20;
   const maxX = window.innerWidth - noBtn.offsetWidth - margin;
   const maxY = window.innerHeight - noBtn.offsetHeight - margin;
   const minX = margin;
   const minY = margin;
 
-  const x = minX + Math.random()*(maxX - minX);
-  const y = minY + Math.random()*(maxY - minY);
+  const x = minX + Math.random() * (maxX - minX);
+  const y = minY + Math.random() * (maxY - minY);
 
   noBtn.style.position = 'fixed';
   noBtn.style.left = x + 'px';
@@ -74,9 +74,10 @@ noBtn.onclick = () => {
   yesBtn.style.transform = `scale(${yesScale})`;
 
   createRose();
-};
+});
 
-yesBtn.onclick = () => {
+// YES bouton avec addEventListener
+yesBtn.addEventListener('click', () => {
   thankyou.style.display='flex';
   requestAnimationFrame(()=>thankyou.style.opacity='1');
   for(let i=0;i<20;i++) createRose();
@@ -85,7 +86,7 @@ yesBtn.onclick = () => {
     thankyou.querySelector('h1').style.display='none';
     thankyou.querySelector('p').style.display='none';
   },2000);
-};
+});
 
   </script>
 </body>
