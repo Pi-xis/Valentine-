@@ -34,7 +34,7 @@ button { padding:12px 25px; border:none; border-radius:30px; font-size:18px; fon
 
 .rose { position:absolute; font-size:30px; pointer-events:none; z-index:25; text-shadow:0 0 15px rgba(255,77,109,0.9),0 0 25px rgba(255,77,109,0.6); }
 
-.confetti { position:absolute; width:10px; height:10px; z-index:50; pointer-events:none; border-radius:50%; }
+.confetti { position:absolute; width:10px; height:10px; z-index:50; pointer-events:none; border-radius:50%; box-shadow:0 0 8px rgba(255,255,255,0.7); }
 
 #thankyou { position:fixed; inset:0; display:none; opacity:0; background:rgba(255,224,214,0.85); z-index:30; display:flex; justify-content:center; align-items:center; flex-direction:column; transition: opacity 0.8s ease; pointer-events:none; }
 #thankyou h1 { font-size:56px; color:#ff4d6d; text-shadow:0 0 20px rgba(255,77,109,0.8); }
@@ -95,7 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
       conf.className='confetti';
       conf.style.left=Math.random()*(window.innerWidth-10)+'px';
       conf.style.top='-10px';
-      conf.style.background = `linear-gradient(45deg, ${confettiColors[Math.floor(Math.random()*confettiColors.length)]}, ${confettiColors[Math.floor(Math.random()*confettiColors.length)]})`;
+      const color1 = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+      const color2 = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+      conf.style.background = `linear-gradient(45deg, ${color1}, ${color2})`;
       document.body.appendChild(conf);
       const duration=3000+Math.random()*2000;
       conf.animate([{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(${window.innerHeight}px) rotate(${Math.random()*360}deg)`}],
@@ -107,10 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // NO bouton
   noBtn.addEventListener('click', () => {
     const margin=10;
-    const maxX=Math.max(0, window.innerWidth-noBtn.offsetWidth-margin);
-    const maxY=Math.max(0, window.innerHeight-noBtn.offsetHeight-margin);
-    const x=margin+Math.random()*(maxX-margin);
-    const y=margin+Math.random()*(maxY-margin);
+    const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+    const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+    const x = Math.min(Math.max(margin, Math.random() * maxX), maxX);
+    const y = Math.min(Math.max(margin, Math.random() * maxY), maxY);
 
     noBtn.style.position='fixed';
     noBtn.style.transition='left 0.4s ease-in-out, top 0.4s ease-in-out';
