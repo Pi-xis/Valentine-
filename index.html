@@ -114,13 +114,13 @@ const noBtn = document.getElementById('noBtn');
 
 function createRose(x) {
   const rose = document.createElement('div');
-  rose.classList.add('rose');
-  rose.style.left = x + 'px';
-  rose.style.top = '-60px';
+  rose.className = 'rose';
   rose.textContent = '🌹';
+  rose.style.left = x + 'px';
+  rose.style.top = '-80px';
   rose.style.animationDuration = (3 + Math.random() * 2) + 's';
   document.body.appendChild(rose);
-  setTimeout(() => rose.remove(), 6000);
+  setTimeout(() => rose.remove(), 7000);
 }
 
 function rainRoses() {
@@ -189,12 +189,16 @@ yesBtn.addEventListener('click', async () => {
 
 noBtn.addEventListener('click', () => {
   noBtn.style.position = 'absolute';
-  noBtn.style.left = Math.random() * 80 + '%';
-  noBtn.style.top = Math.random() * 80 + '%';
+  noBtn.style.left = Math.random() * (window.innerWidth - noBtn.offsetWidth) + 'px';
+  noBtn.style.top = Math.random() * (window.innerHeight - noBtn.offsetHeight) + 'px';
 
-  // Attendre que la position soit bien appliquée
-  requestAnimationFrame(() => {
-    const rect = noBtn.getBoundingClientRect();
+  const rect = noBtn.getBoundingClientRect();
+
+  // Roses visibles et garanties à chaque clic
+  for (let i = 0; i < 8; i++) {
+    createRose(rect.left + Math.random() * rect.width);
+  }
+});
 
     // Plusieurs roses visibles à chaque clic sur NO
     for (let i = 0; i < 6; i++) {
