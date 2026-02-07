@@ -63,7 +63,7 @@ button {
 #thankyou {
   position:fixed;
   inset:0;
-  background: radial-gradient(circle at top,#ffe0d6,#f7b2a6);
+  background: rgba(255,224,214,0.85); /* semi-transparent pour voir le premier dashboard */
   display:flex;
   justify-content:center;
   align-items:center;
@@ -99,7 +99,7 @@ button {
 </style>
 </head>
 <body>
-<div class="card">
+<div class="card" id="firstDashboard">
   <img src="https://wallpapercave.com/wp/wp8365768.png" alt="Minions Valentine">
   <h2>Will you be my Valentine?</h2>
   <div class="buttons">
@@ -130,9 +130,9 @@ yesBtn.disabled=true; noBtn.disabled=true;
 
 if(navigator.vibrate) navigator.vibrate(40);
 
-thankyou.style.display='flex'; thankText.forEach(el=>el.style.display='block'); setTimeout(()=>thankyou.classList.add('show'),10);
+// Afficher le second dashboard par-dessus le premier thankyou.style.display='flex'; thankText.forEach(el=>el.style.display='block'); setTimeout(()=>thankyou.classList.add('show'),10);
 
-// Faire disparaître uniquement le texte après 2s, dashboard reste setTimeout(()=>{ thankText.forEach(el=>el.style.display='none'); },2000);
+// Faire disparaître uniquement le texte après 2s, dashboard reste visible setTimeout(()=>{ thankText.forEach(el=>el.style.display='none'); },2000);
 
 if(!rosesIntervalActive){ rosesIntervalActive=true; setInterval(()=>{ for(let i=0;i<12;i++) createRose(Math.random()*window.innerWidth,4); },300); }
 
