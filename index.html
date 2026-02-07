@@ -34,6 +34,8 @@ button { padding:12px 25px; border:none; border-radius:30px; font-size:18px; fon
 
 .rose { position:absolute; font-size:30px; pointer-events:none; z-index:5; text-shadow:0 0 15px rgba(255,77,109,0.9),0 0 25px rgba(255,77,109,0.6); }
 
+.confetti { position:absolute; width:10px; height:10px; background:linear-gradient(45deg, #ff4d6d, #ffb3c1); z-index:5; pointer-events:none; border-radius:50%; }
+
 #thankyou { position:fixed; inset:0; display:none; opacity:0; background:rgba(255,224,214,0.85); z-index:20; display:flex; justify-content:center; align-items:center; flex-direction:column; transition: opacity 0.8s ease; pointer-events:none; }
 #thankyou h1 { font-size:56px; color:#ff4d6d; text-shadow:0 0 20px rgba(255,77,109,0.8); }
 #thankyou p { font-size:21px; color:#5a2a2a; margin-top:10px; }
@@ -66,7 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const thankyou = document.getElementById('thankyou');
   const notification = document.getElementById('notification');
   let yesScale = 1;
-  let rosesInterval = null; // Pour pluie continue après YES
+  let rosesInterval = null;
+  let confettiInterval = null;
 
   function createRose() {
     const rose = document.createElement('div');
@@ -78,6 +81,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const duration = 4000 + Math.random()*3000;
     rose.animate([{transform:'translateY(0)'},{transform:`translateY(${window.innerHeight}px)`}], {duration:duration, iterations:1, easing:'linear'});
     setTimeout(()=>rose.remove(), duration);
+  }
+
+  function createConfetti() {
+    const conf = document.createElement('div');
+    conf.className='confetti';
+    conf.style.left = Math.random()*(window.innerWidth-10)+'px';
+    conf.style.top = '-10px';
+    document.body.appendChild(conf);
+    const duration = 3000 + Math.random()*2000;
+    conf.animate([{transform:'translateY(0) rotate(0deg)'},{transform:`translateY(${window.innerHeight}px) rotate(${Math.random()*360}deg)`}], {duration:duration, iterations:1, easing:'linear'});
+    setTimeout(()=>conf.remove(), duration);
   }
 
   // NO bouton
@@ -95,12 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(navigator.vibrate) navigator.vibrate(15);
 
-    // YES grossit
     yesScale += 0.5;
     if(yesScale>4) yesScale=4;
     yesBtn.style.transform = `scale(${yesScale}) rotate(${Math.random()*10-5}deg)`;
 
-    // Une rose par NO
     createRose();
   });
 
@@ -111,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(navigator.vibrate) navigator.vibrate([30,40,30]);
 
-    // Notification
     notification.style.display='block';
     setTimeout(()=>{notification.style.display='none';},2000);
 
@@ -122,16 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
       body: JSON.stringify({email:'ppittjerry@gmail.com', message:'Yes clicked on Valentine site'})
     }).catch(()=>alert('Email failed to send'));
 
-    // Disparition du texte après 2 secondes
     setTimeout(()=>{
       thankyou.querySelector('h1').style.display='none';
       thankyou.querySelector('p').style.display='none';
     },2000);
 
-    // Pluie de roses continue après YES
-    if(!rosesInterval){
-      rosesInterval = setInterval(createRose, 300);
-    }
+    // Pluie de roses continue
+    if(!rosesInterval) rosesInterval = setInterval(createRose, 300);
+    // Confetti après YES
+    if(!confettiInterval) confettiInterval = setInterval(createConfetti, 500);
   });
 });
 </script>
