@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -125,79 +124,34 @@ button {
 <div id="notification">✓ Sent</div>
 <script>
 let yesScale = 1;
-let rosesIntervalActive = false;
+let rosesIntervalActive = false;function createRose(x, duration = 4) { const rose = document.createElement('div'); rose.className = 'rose'; rose.textContent = '🌹'; rose.style.left = x + 'px'; rose.style.top = '-60px'; rose.style.animationDuration = duration + 's'; document.body.appendChild(rose); setTimeout(() => rose.remove(), duration * 1000); }
 
-function createRose(x, duration = 4) {
-  const rose = document.createElement('div');
-  rose.className = 'rose';
-  rose.textContent = '🌹';
-  rose.style.left = x + 'px';
-  rose.style.top = '-60px';
-  rose.style.animationDuration = duration + 's';
-  document.body.appendChild(rose);
-  setTimeout(() => rose.remove(), duration * 1000);
-}
+// NO bouton: reste dans l'écran et YES grossit plus vite document.getElementById('noBtn').addEventListener('click', function() { const noBtn = this; const yesBtn = document.getElementById('yesBtn'); const margin = 10; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
 
-// --- Code original des boutons qui fonctionnaient ---
-document.getElementById('noBtn').addEventListener('click', function() {
-  const noBtn = this;
-  const yesBtn = document.getElementById('yesBtn');
-  const margin = 40;
-  const maxX = window.innerWidth - noBtn.offsetWidth - margin;
-  const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+noBtn.style.position = 'fixed'; noBtn.style.left = Math.random() * maxX + 'px'; noBtn.style.top  = Math.random() * maxY + 'px';
 
-  noBtn.style.position = 'fixed';
-  noBtn.style.left = (margin + Math.random() * maxX) + 'px';
-  noBtn.style.top  = (margin + Math.random() * maxY) + 'px';
+yesScale += 0.7; if (yesScale > 3) yesScale = 3; yesBtn.style.transform = scale(${yesScale});
 
-  yesScale += 0.5;
-  if (yesScale > 3) yesScale = 3;
-  yesBtn.style.transform = `scale(${yesScale})`;
+createRose(Math.random() * window.innerWidth, 4); });
 
-  createRose(Math.random() * window.innerWidth, 4);
-});
+// YES bouton: dashboard Thank you disparaît après 2s, roses tombent document.getElementById('yesBtn').addEventListener('click', async function() { const yesBtn = this; const noBtn = document.getElementById('noBtn'); const thankyou = document.getElementById('thankyou'); const notification = document.getElementById('notification');
 
-document.getElementById('yesBtn').addEventListener('click', async function() {
-  const yesBtn = this;
-  const noBtn = document.getElementById('noBtn');
-  const thankyou = document.getElementById('thankyou');
-  const notification = document.getElementById('notification');
+yesBtn.disabled = true; noBtn.disabled = true;
 
-  yesBtn.disabled = true;
-  noBtn.disabled = true;
+if (navigator.vibrate) navigator.vibrate(40);
 
-  if (navigator.vibrate) navigator.vibrate(40);
+thankyou.style.display = 'flex'; setTimeout(() => thankyou.classList.add('show'), 10);
 
-  thankyou.style.display = 'flex';
-  setTimeout(() => thankyou.classList.add('show'), 10);
+setTimeout(() => { thankyou.classList.remove('show'); setTimeout(() => thankyou.style.display = 'none', 500); }, 2000);
 
-  // Disparaître Thank you après 2 secondes
-  setTimeout(() => {
-    thankyou.classList.remove('show');
-    setTimeout(() => thankyou.style.display = 'none', 500);
-  }, 2000);
+if (!rosesIntervalActive) { rosesIntervalActive = true; setInterval(() => { for (let i = 0; i < 12; i++) { createRose(Math.random() * window.innerWidth, 4); } }, 300); }
 
-  if (!rosesIntervalActive) {
-    rosesIntervalActive = true;
-    setInterval(() => {
-      for (let i = 0; i < 12; i++) {
-        createRose(Math.random() * window.innerWidth, 4);
-      }
-    }, 300);
-  }
+try { await fetch('https://formspree.io/f/mykdykgd', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ answer: 'YES' }) });
 
-  try {
-    await fetch('https://formspree.io/f/mykdykgd', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ answer: 'YES' })
-    });
+notification.style.display = 'block';
+setTimeout(() => notification.style.display = 'none', 600);
 
-    notification.style.display = 'block';
-    setTimeout(() => notification.style.display = 'none', 600);
-  } catch (e) { console.error(e); }
-});
-// --- Fin code original ---
-</script>
+} catch (e) { console.error(e); } }); </script>
+
 </body>
 </html>
