@@ -6,6 +6,7 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
+  pointer-events: auto;
   font-family: 'Arial', sans-serif;
   background: linear-gradient(135deg, #f7b2a6, #ffe5d9);
   background-size: 400% 400%;
@@ -23,6 +24,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 .card {
+  pointer-events: auto;
   background: rgba(255, 255, 255, 0.95);
   padding: 25px;
   border-radius: 25px;
@@ -57,6 +59,7 @@ button {
 .yes { background: linear-gradient(135deg, #ff4d6d, #ff7b9c); color: white; transition: transform 0.2s ease; }
 .no { background: linear-gradient(135deg, #ccc, #aaa); color: #333; transition: transform 0.3s ease; }
 .rose {
+  pointer-events: none;
   position: absolute;
   font-size: 30px;
   pointer-events: none;
@@ -73,6 +76,7 @@ button {
   100% { transform: translateY(100vh) rotateX(360deg) rotateY(360deg); opacity: 0; }
 }
 #thankyou {
+  pointer-events: none;
   position:fixed;
   inset:0;
   background: radial-gradient(circle at top, #ffe0d6, #f7b2a6);
