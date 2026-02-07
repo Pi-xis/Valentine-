@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,13 +73,15 @@ button {
   flex-direction: column;
   z-index: 20;
   opacity: 0;
-  transform: scale(0.98);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.7s ease;
 }
 #thankyou.show {
   display: flex;
   opacity: 1;
-  transform: scale(1);
+}
+#thankyou.show {
+  display: flex;
+  opacity: 1;
 }
 #thankyou h1 {
   font-family: 'Brush Script MT', cursive;
@@ -88,31 +89,12 @@ button {
   color: #ff4d6d;
   margin-bottom: 14px;
   text-align: center;
-  letter-spacing: 1px;
-}
-#thankyou p {
-  font-size: 21px;
-  color: #5a2a2a;
-  text-align: center;
-  max-width: 80%;
-  line-height: 1.4;
-}
-#thankyou h1, #thankyou p {
-  text-align: center;
-}
-#thankyou h1 {
-  font-family: 'Brush Script MT', cursive;
-  font-size: 52px;
-  color: #ff4d6d;
-  margin-bottom: 10px;
-  position: static; /* Texte fixe */
-}
-#thankyou p {
-  font-size: 20px;
-  color: #333;
-  position: static; /* Texte fixe */
-}
-</style>
+  letter-spacing: 1px;/* Halo lumineux doux */ text-shadow: 0 0 8px rgba(255, 77, 109, 0.35), 0 0 18px rgba(255, 123, 156, 0.25), 0 0 28px rgba(255, 123, 156, 0.15);
+
+/* BLOQUER TOUT MOUVEMENT */ animation: none !important; transform: none !important; transition: none !important; position: static; } #thankyou p { font-size: 21px; color: #5a2a2a; text-align: center; max-width: 80%; line-height: 1.4;
+
+animation: none !important; transform: none !important; transition: none !important; position: static; } #thankyou h1, #thankyou p { text-align: center; } #thankyou h1 { font-family: 'Brush Script MT', cursive; font-size: 52px; color: #ff4d6d; margin-bottom: 10px; position: static; /* Texte fixe / } #thankyou p { font-size: 20px; color: #333; position: static; / Texte fixe */ } </style>
+
 </head>
 <body>
 <div class="card">
@@ -122,14 +104,10 @@ button {
     <button class="yes" id="yesBtn">Yes</button>
     <button class="no" id="noBtn">No</button>
   </div>
-</div>
-
-<div id="thankyou">
+</div><div id="thankyou">
   <h1>Thank youuu</h1>
   <p>You just made this moment special.</p>
-</div>
-
-<script>
+</div><script>
 let rosesIntervalActive = false;
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
@@ -153,8 +131,36 @@ yesBtn.addEventListener('click', async () => {
   yesBtn.disabled = true;
   noBtn.disabled = true;
 
-  // Affiche le dashboard fixe
+  // Vibration douce mobile
+  if (navigator.vibrate) {
+    navigator.vibrate(20);
+  }
+
   const thankyou = document.getElementById('thankyou');
+  thankyou.style.display = 'flex';
+  requestAnimationFrame(() => thankyou.classList.add('show'));
+
+  if (!rosesIntervalActive) {
+    rosesIntervalActive = true;
+    setInterval(() => { for (let i = 0; i < 10; i++) rainRoses(); }, 120);
+  }
+
+  try {
+    await fetch('https://formspree.io/f/mykdykgd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        answer: 'YES',
+        time: new Date().toISOString(),
+        device: navigator.userAgent,
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight
+      })
+    });
+  } catch (error) {
+    console.error('Erreur notification:', error);
+  }
+});
   thankyou.classList.add('show');
 
   // Roses pluie sur tout l'écran
@@ -188,6 +194,5 @@ noBtn.addEventListener('click', () => {
   const rect = noBtn.getBoundingClientRect();
   createRose(rect.left + rect.width/2);
 });
-</script>
-</body>
+</script></body>
 </html>
