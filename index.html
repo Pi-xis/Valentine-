@@ -57,18 +57,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const notification = document.getElementById('notification');
   let yesScale = 1;
 
-  function createRose(){
-    const rose = document.createElement('div');
-    rose.className='rose';
-    rose.textContent='🌹';
-    rose.style.left = Math.random()*window.innerWidth+'px';
-    rose.style.animationDuration = '5s';
-    rose.style.textShadow = '0 0 15px rgba(255,77,109,0.9), 0 0 25px rgba(255,77,109,0.6)';
-    document.body.appendChild(rose);
-    setTimeout(()=>rose.remove(),5000);
+  function createRose(multitude = false){
+    const count = multitude ? 20 : 1;
+    for(let i=0;i<count;i++){
+      const rose = document.createElement('div');
+      rose.className='rose';
+      rose.textContent='🌹';
+      rose.style.left = Math.random()*window.innerWidth+'px';
+      rose.style.animationDuration = '5s';
+      rose.style.textShadow = '0 0 15px rgba(255,77,109,0.9), 0 0 25px rgba(255,77,109,0.6)';
+      document.body.appendChild(rose);
+      setTimeout(()=>rose.remove(),5000);
+    }
   }
 
-  // NO bouton: mouvement malicieux avec micro vibration
+  // NO bouton: glisse malicieusement, micro vibration, une seule rose
   noBtn.addEventListener('click', () => {
     const margin = 20;
     const maxX = window.innerWidth - noBtn.offsetWidth - margin;
@@ -77,25 +80,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const y = margin + Math.random() * (maxY - margin);
 
     noBtn.style.position = 'fixed';
-    noBtn.style.transition = 'left 0.3s ease, top 0.3s ease';
+    noBtn.style.transition = 'left 0.25s ease-in-out, top 0.25s ease-in-out';
     noBtn.style.left = x + 'px';
     noBtn.style.top = y + 'px';
 
     if(navigator.vibrate) navigator.vibrate(15);
 
-    yesScale += 1;
+    yesScale += 0.7; // grossissement plus rapide
     if(yesScale > 4) yesScale = 4;
     yesBtn.style.transform = `scale(${yesScale})`;
 
-    createRose();
+    createRose(false); // une seule rose
   });
 
-  // YES bouton: dashboard + roses + notification + vibration
+  // YES bouton: dashboard + multiples roses + notification + vibration
   yesBtn.addEventListener('click', () => {
     thankyou.style.display = 'flex';
     requestAnimationFrame(() => thankyou.style.opacity = '1');
 
-    for(let i=0;i<20;i++) createRose();
+    createRose(true); // multitude de roses
     if(navigator.vibrate) navigator.vibrate([30,40,30]);
 
     // Notification
