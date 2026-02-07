@@ -16,12 +16,12 @@
     button { padding:12px 25px; border:none; border-radius:30px; font-size:18px; font-weight:bold; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.2); transition: transform 0.2s ease; }
     .yes { background:linear-gradient(135deg,#ff4d6d,#ff7b9c); color:white; }
     .no { background:linear-gradient(135deg,#ccc,#aaa); color:#333; }
-    .rose { position:absolute; font-size:30px; pointer-events:none; z-index:25; text-shadow:0 0 10px rgba(255,77,109,0.9); animation:fall linear forwards; }
+    .rose { position:absolute; font-size:30px; pointer-events:none; z-index:25; text-shadow:0 0 12px rgba(255,77,109,0.9), 0 0 20px rgba(255,77,109,0.5); animation:fall linear forwards; }
     @keyframes fall { from{transform:translateY(-50px);opacity:1;} to{transform:translateY(100vh);opacity:0;} }
     #thankyou { position:fixed; inset:0; display:none; opacity:0; background:rgba(255,224,214,0.85); z-index:20; display:flex; justify-content:center; align-items:center; flex-direction:column; transition: opacity 0.8s ease; }
-    #thankyou h1 { font-size:56px; color:#ff4d6d; text-shadow:0 0 12px rgba(255,77,109,0.5); }
+    #thankyou h1 { font-size:56px; color:#ff4d6d; text-shadow:0 0 20px rgba(255,77,109,0.8); }
     #thankyou p { font-size:21px; color:#5a2a2a; margin-top:10px; }
-    #notification { position:fixed; top:10px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.9); padding:10px 20px; border-radius:20px; font-size:16px; display:none; z-index:30; }
+    #notification { position:fixed; top:10px; left:50%; transform:translateX(-50%); background:rgba(255,255,255,0.9); padding:10px 20px; border-radius:20px; font-size:16px; display:none; z-index:30; box-shadow:0 4px 15px rgba(0,0,0,0.2); }
   </style>
 </head>
 <body>
@@ -37,64 +37,63 @@
     <h1>Thank youuu</h1>
     <p>You just made this moment special.</p>
   </div>
-  <div id="notification">✓ Sent</div>
-  <script>
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const thankyou = document.getElementById('thankyou');
-    const notification = document.getElementById('notification');
-    let yesScale = 1;function createRose(){
-  const rose = document.createElement('div');
-  rose.className='rose';
-  rose.textContent='🌹';
-  rose.style.left = Math.random()*window.innerWidth+'px';
-  rose.style.animationDuration='5s';
-  document.body.appendChild(rose);
-  setTimeout(()=>rose.remove(),5000);
-}
+  <div id="notification">✓ Sent</div>  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const yesBtn = document.getElementById('yesBtn');
+      const noBtn = document.getElementById('noBtn');
+      const thankyou = document.getElementById('thankyou');
+      const notification = document.getElementById('notification');
+      let yesScale = 1;
 
-// NO bouton: reste dans l'écran
-noBtn.onclick = function() {
-  const margin = 20;
-  const maxX = window.innerWidth - noBtn.offsetWidth - margin;
-  const maxY = window.innerHeight - noBtn.offsetHeight - margin;
-  const minX = margin;
-  const minY = margin;
+      function createRose(){
+        const rose = document.createElement('div');
+        rose.className='rose';
+        rose.textContent='🌹';
+        rose.style.left = Math.random()*window.innerWidth+'px';
+        rose.style.animationDuration='5s';
+        rose.style.textShadow='0 0 15px rgba(255,77,109,0.9), 0 0 25px rgba(255,77,109,0.6)'; // halo effect
+        document.body.appendChild(rose);
+        setTimeout(()=>rose.remove(),5000);
+      }
 
-  const x = minX + Math.random() * (maxX - minX);
-  const y = minY + Math.random() * (maxY - minY);
+      // NO bouton: reste dans l'écran
+      noBtn.onclick = function() {
+        const margin = 20;
+        const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+        const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+        const x = margin + Math.random() * (maxX - margin);
+        const y = margin + Math.random() * (maxY - margin);
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
 
-  noBtn.style.position = 'fixed';
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
+        if(navigator.vibrate) navigator.vibrate(20);
 
-  if (navigator.vibrate) navigator.vibrate(20);
+        yesScale += 1;
+        if (yesScale>3.8) yesScale = 3.8;
+        yesBtn.style.transform = `scale(${yesScale})`;
 
-  yesScale += 1;
-  if (yesScale > 3.8) yesScale = 3.8;
-  yesBtn.style.transform = `scale(${yesScale})`;
+        createRose();
+      };
 
-  createRose();
-};
+      // YES bouton: dashboard + roses + notification + vibration
+      yesBtn.onclick = function() {
+        thankyou.style.display = 'flex';
+        requestAnimationFrame(() => thankyou.style.opacity = '1');
 
-// YES bouton: dashboard + roses + notification
-yesBtn.onclick = function() {
-  thankyou.style.display = 'flex';
-  requestAnimationFrame(() => thankyou.style.opacity = '1');
+        for(let i=0;i<20;i++) createRose();
+        if(navigator.vibrate) navigator.vibrate([30,40,30]);
 
-  for(let i=0;i<20;i++) createRose();
-  if (navigator.vibrate) navigator.vibrate([30,40,30]);
+        // Notification
+        notification.style.display = 'block';
+        setTimeout(()=>{notification.style.display='none';},2000);
 
-  // Afficher notification
-  notification.style.display = 'block';
-  setTimeout(() => { notification.style.display = 'none'; }, 2000);
-
-  setTimeout(() => {
-    thankyou.querySelector('h1').style.display='none';
-    thankyou.querySelector('p').style.display='none';
-  }, 2000);
-};
-
-  </script>
-</body>
+        // Thank you message disappears after 2s
+        setTimeout(()=>{
+          thankyou.querySelector('h1').style.display='none';
+          thankyou.querySelector('p').style.display='none';
+        },2000);
+      };
+    });
+  </script></body>
 </html>
