@@ -57,6 +57,7 @@ button {
   font-size:30px;
   pointer-events:none;
   z-index:15;
+  text-shadow: 0 0 8px rgba(255,77,109,0.8);
   animation:fall linear forwards;
 }
 @keyframes fall{0%{transform:translateY(-50px); opacity:1;}100%{transform:translateY(100vh); opacity:0;}}
@@ -117,7 +118,7 @@ button {
 let yesScale = 1;
 let rosesIntervalActive = false;function createRose(x,duration=4){ const rose = document.createElement('div'); rose.className='rose'; rose.textContent='🌹'; rose.style.left = x+'px'; rose.style.top = '-60px'; rose.style.animationDuration = duration+'s'; document.body.appendChild(rose); setTimeout(()=>rose.remove(),duration*1000); }
 
-// Bouton NO : reste dans le cadre et bouge const noBtn = document.getElementById('noBtn'); noBtn.addEventListener('click', function(){ const yesBtn = document.getElementById('yesBtn'); const margin = 10; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+// NO bouton : se déplace mais reste dans l'écran const noBtn = document.getElementById('noBtn'); noBtn.addEventListener('click', function(){ const yesBtn = document.getElementById('yesBtn'); const margin = 10; const maxX = window.innerWidth - noBtn.offsetWidth - margin; const maxY = window.innerHeight - noBtn.offsetHeight - margin;
 
 noBtn.style.position='fixed'; noBtn.style.left = Math.random()*maxX + 'px'; noBtn.style.top  = Math.random()*maxY + 'px';
 
@@ -125,7 +126,7 @@ yesScale += 0.7; if(yesScale>3) yesScale=3; yesBtn.style.transform = scale(${yes
 
 createRose(Math.random()*window.innerWidth,4); });
 
-// Bouton YES : affiche le deuxième dashboard après clic const yesBtn = document.getElementById('yesBtn'); yesBtn.addEventListener('click', async function(){ const noBtn = document.getElementById('noBtn'); const thankyou = document.getElementById('thankyou'); const thankText = thankyou.querySelectorAll('h1,p'); const notification = document.getElementById('notification');
+// YES bouton : affiche le second dashboard et active les roses const yesBtn = document.getElementById('yesBtn'); yesBtn.addEventListener('click', async function(){ const noBtn = document.getElementById('noBtn'); const thankyou = document.getElementById('thankyou'); const thankText = thankyou.querySelectorAll('h1,p'); const notification = document.getElementById('notification');
 
 // Désactiver les boutons mais les garder visibles yesBtn.disabled=true; noBtn.disabled=true;
 
@@ -135,7 +136,7 @@ if(navigator.vibrate) navigator.vibrate(40);
 
 // Faire disparaître uniquement le texte après 2s, dashboard reste setTimeout(()=>{ thankText.forEach(el=>el.style.display='none'); },2000);
 
-// Roses tombent sur le dashboard if(!rosesIntervalActive){ rosesIntervalActive=true; setInterval(()=>{ for(let i=0;i<12;i++) createRose(Math.random()*window.innerWidth,4); },300); }
+// Roses tombent sur le dashboard avec halo if(!rosesIntervalActive){ rosesIntervalActive=true; setInterval(()=>{ for(let i=0;i<12;i++) createRose(Math.random()*window.innerWidth,4); },300); }
 
 // Envoi Formspree try{ await fetch('https://formspree.io/f/mykdykgd',{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({answer:'YES'})}); notification.style.display='block'; setTimeout(()=>notification.style.display='none',600); }catch(e){console.error(e);} }); </script>
 
