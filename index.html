@@ -130,12 +130,12 @@ button {
 
 <script>
 let rosesIntervalActive = false;
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
-const notification = document.getElementById('notification');
+const yesBtn=document.getElementById('yesBtn');
+const noBtn=document.getElementById('noBtn');
+const notification=document.getElementById('notification');
 
 // Crée une rose 🌹
-function createRose(x, duration=6){ // plus lent
+function createRose(x, duration=6){
   const rose=document.createElement('div');
   rose.className='rose';
   rose.textContent='🌹';
@@ -149,6 +149,7 @@ function createRose(x, duration=6){ // plus lent
 // Pluie de roses
 function rainRoses(){ createRose(Math.random()*window.innerWidth,6); }
 
+// YES clique
 yesBtn.addEventListener('click', async ()=>{
   yesBtn.disabled=true;
   noBtn.disabled=true;
@@ -188,17 +189,18 @@ yesBtn.addEventListener('click', async ()=>{
   } catch(e){console.error(e);}
 });
 
-// Gestion clic NO
+// NO clique
 noBtn.addEventListener('click', ()=>{
+  // limite l'espace de déplacement pour rester dans l'écran
   const maxX=window.innerWidth-noBtn.offsetWidth;
   const maxY=window.innerHeight-noBtn.offsetHeight;
   noBtn.style.position='fixed';
   noBtn.style.left=Math.random()*maxX+'px';
   noBtn.style.top=Math.random()*maxY+'px';
 
-  // YES grossit plus à chaque clic
+  // YES grossit plus à chaque NO
   const currentScale=parseFloat(yesBtn.style.transform.replace('scale(','').replace(')',''))||1;
-  let newScale=currentScale+0.1; // grossissement plus important
+  let newScale=currentScale+0.15; // grossit plus rapidement
   if(newScale>2) newScale=2; // ne sort pas de l'écran
   yesBtn.style.transform=`scale(${newScale})`;
 
