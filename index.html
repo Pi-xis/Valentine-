@@ -42,6 +42,7 @@
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
     const thankyou = document.getElementById('thankyou');
+    const notification = document.getElementById('notification');
     let yesScale = 1;function createRose(){
   const rose = document.createElement('div');
   rose.className='rose';
@@ -52,8 +53,8 @@
   setTimeout(()=>rose.remove(),5000);
 }
 
-// NO bouton avec addEventListener et limite écran
-noBtn.addEventListener('click', () => {
+// NO bouton: reste dans l'écran
+noBtn.onclick = function() {
   const margin = 20;
   const maxX = window.innerWidth - noBtn.offsetWidth - margin;
   const maxY = window.innerHeight - noBtn.offsetHeight - margin;
@@ -70,23 +71,29 @@ noBtn.addEventListener('click', () => {
   if (navigator.vibrate) navigator.vibrate(20);
 
   yesScale += 1;
-  if(yesScale>3.8) yesScale=3.8;
+  if (yesScale > 3.8) yesScale = 3.8;
   yesBtn.style.transform = `scale(${yesScale})`;
 
   createRose();
-});
+};
 
-// YES bouton avec addEventListener
-yesBtn.addEventListener('click', () => {
-  thankyou.style.display='flex';
-  requestAnimationFrame(()=>thankyou.style.opacity='1');
+// YES bouton: dashboard + roses + notification
+yesBtn.onclick = function() {
+  thankyou.style.display = 'flex';
+  requestAnimationFrame(() => thankyou.style.opacity = '1');
+
   for(let i=0;i<20;i++) createRose();
-  if(navigator.vibrate) navigator.vibrate([30,40,30]);
-  setTimeout(()=>{
+  if (navigator.vibrate) navigator.vibrate([30,40,30]);
+
+  // Afficher notification
+  notification.style.display = 'block';
+  setTimeout(() => { notification.style.display = 'none'; }, 2000);
+
+  setTimeout(() => {
     thankyou.querySelector('h1').style.display='none';
     thankyou.querySelector('p').style.display='none';
-  },2000);
-});
+  }, 2000);
+};
 
   </script>
 </body>
